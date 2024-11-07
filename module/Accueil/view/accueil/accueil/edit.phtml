@@ -1,0 +1,160 @@
+<?php
+$this->headLink()
+        ->prependStylesheet($this->basePath('bootstrap-select.min.css'));
+$this->inlineScript()
+        ->appendFile($this->basePath('bootstrap-select.min.js'))
+        ->appendFile($this->basePath('defaults-fr_FR.js'));
+
+
+$title = "Modification de l'arrivée";
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('accueil', array('action' => 'edit', 'Nume' => $this->Nume,)));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+?>
+<?php
+echo $this->flashMessenger()->renderCurrent('error', array('alert', 'alert-danger'));
+echo $this->flashMessenger()->renderCurrent('success', array('alert', 'alert-success'));
+echo $this->flashMessenger()->renderCurrent('warning', array('alert', 'alert-warning'));
+?>
+
+<?php echo $this->form()->openTag($form); ?>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h4 class="modal-title">Modifier une arrivée
+                <a href="<?php echo $this->url('accueil'); ?>" class="btn btn-warning btn-outline btn-rounded pull-right">Fermer</a>
+            </h4>
+
+        </div>
+        <div class="modal-body">
+            <?php
+            echo $this->formHidden($form->get('Nume'));
+            ?>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('Cta_Nume')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('Cta_Nume'));
+                    echo $this->formElementErrors($form->get('Cta_Nume'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('ExteNume')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('ExteNume'));
+                    echo $this->formElementErrors($form->get('ExteNume'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('Prsc')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('Prsc'));
+                    echo $this->formElementErrors($form->get('Prsc'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('Nom_')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('Nom_'));
+                    echo $this->formElementErrors($form->get('Nom_'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('Pnom')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('Pnom'));
+                    echo $this->formElementErrors($form->get('Pnom'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('Age_')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('Age_'));
+                    echo $this->formElementErrors($form->get('Age_'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('Sexe')); ?>
+                </label>
+                <div class="radio col-sm-9">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" class="primary" name="Sexe" value="M." <?php if ($form->get('Sexe')->getValue() == "M.") echo "checked"; ?>> Masculin
+                            <span class="cr "><i class="cr-icon glyphicon glyphicon-ok "></i></span>
+                        </label>
+                        <label>
+                            <input type="radio" class="primary" name="Sexe" value="Mme" <?php if ($form->get('Sexe')->getValue() == "Mme") echo "checked"; ?>> Féminin
+                            <span class="cr "><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('Moti')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formSelect($form->get('Moti'));
+                    echo $this->formElementErrors($form->get('Moti'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('Prec')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formSelect($form->get('Prec'));
+                    echo $this->formElementErrors($form->get('Prec'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('ArriHoro')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('ArriHoro'));
+                    echo $this->formElementErrors($form->get('ArriHoro'));
+                    ?>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" name="submit" value="Valider"  class="btn btn-primary btn-outline btn-rounded ">Valider</button>
+            <button type="reset" name="rest" value="Annuler" class="btn btn-default btn-outline btn-rounded pull-right" >Annuler</button>
+        </div>
+    </div>
+</div>
+
+<?php echo $this->form()->closeTag() ?>

@@ -1,0 +1,118 @@
+<?php
+$title = 'Saisir une entrée';
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('pharmacie', array('action' => 'sortie', 'Nume' => $this->Nume,)));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+?>
+
+<?php
+        
+$this->headLink()
+        ->prependStylesheet($this->basePath('themes/datas/css/sweet-alert.css'))
+        ->prependStylesheet($this->basePath('bootstrap-select.min.css'))
+        ->prependStylesheet($this->basePath('themes/datas/css/tables.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/bootstrap-table-develop/src/bootstrap-table.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/media/css/dataTables.bootstrap.css'));
+$this->inlineScript()
+        ->appendFile($this->basePath('themes/datas/assets/bootstrap-table-develop/dist/bootstrap-table.min.js'))
+        ->appendFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/jquery.dataTables.js'))
+        ->appendFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/dataTables.bootstrap.js'))
+        ->appendFile($this->basePath('bootstrap-select.min.js'));
+?>
+<div class="row">
+    <ul class="examples col-md-12">
+        <div class="row">
+            <li class="message">
+                <button class="btn btn-inverse" id="Errnombre" style="display : none">Click Here!</button>
+            </li>
+        </div> 
+    </ul>
+</div>  
+
+<?php echo $this->form()->openTag($form); ?>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Saisir une sortie</h4>
+</div>
+<div class="modal-body">
+    <?php
+    echo $this->formHidden($form->get('Nume'));
+    ?>
+    <div class="bg-primary text-center" id='titreprod'><strong> </strong></div>
+    <br>
+    <div class="form-group">
+        <label class="control-label col-sm-3">
+            <?php echo $this->formLabel($form->get('NombBoit')); ?>
+        </label>
+        <div class="col-sm-9">
+            <?php
+            echo $this->formInput($form->get('NombBoit'));
+            echo $this->formElementErrors($form->get('NombBoit'));
+            ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3">
+            <?php echo $this->formLabel($form->get('Dest')); ?>
+        </label>
+        <div class="col-sm-9">
+            <?php
+            echo $this->formSelect($form->get('Dest'));
+            echo $this->formElementErrors($form->get('Dest'));
+            ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3">
+            <?php echo $this->formLabel($form->get('Dat_')); ?>
+        </label>
+        <div class="col-sm-9">
+            <?php
+            echo $this->formInput($form->get('Dat_'));
+            echo $this->formElementErrors($form->get('Dat_'));
+            ?>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" name="submit_button" id="submit_button" class="btn btn-primary">Valider</button>
+    <span>
+        <button type="button" name="rest" value="Annuler" class="btn btn-default" data-dismiss="modal" aria-label="Close">Annuler</button>
+    </span>
+</div>
+<?php echo $this->form()->closeTag() ?>
+
+
+<script>
+
+    $(document).ready(function () {
+        document.getElementById("titreprod").innerHTML = '<strong><h4>' + $('#sortietitle').val() + '</h4></strong>';
+        var errmsg = "";
+        var nbstock = $('#nbstock').val();
+        nbstock = parseInt(nbstock);
+        document.querySelector('ul.examples li.message button').onclick = function () {
+            swal(errmsg);
+        };
+        $('#submit_button').click(function () {
+            var nb = $('#NombBoit').val();
+            nb = parseInt(nb);
+            if (nb < 0) {
+                errmsg = "Saisir un nombre positif.";
+                $('#Errnombre').click();
+            }
+            else
+            {
+                if (nb > nbstock) {
+                    errmsg = "Saisir un nombre inférieur ou égal au stock.";
+                    $('#Errnombre').click();
+                }
+                else
+                {
+                    document.getElementById("sortiestock").submit();
+                }
+            }
+        });
+    });
+</script>

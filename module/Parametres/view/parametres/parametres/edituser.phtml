@@ -1,0 +1,79 @@
+<?php
+$title = 'Modifier Utilisateur';
+$this->headTitle($title);
+
+$this->headLink()
+        ->prependStylesheet($this->basePath('bootstrap-select.min.css'));
+$this->inlineScript()
+        ->appendFile($this->basePath('bootstrap-select.min.js'))
+        ->appendFile($this->basePath('defaults-fr_FR.js'));
+
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('parametres', array('action' => 'edituser', 'Nume' => $this->id,)));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title col-sm-4"><?php echo $this->escapeHtml($title); ?></h4>
+        </div>
+        <div class="modal-body">
+            <?php echo $this->formHidden($form->get('user_id')); ?>
+            <div class="form-group">
+                <label class="control-label col-sm-4">
+                    <?php echo $this->formLabel($form->get('username')); ?>
+                </label>
+                <div class="col-sm-8">
+                    <?php
+                    echo $this->forminput($form->get('username'));
+                    echo $this->formElementErrors($form->get('username'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4">
+                    <?php echo $this->formLabel($form->get('email')); ?>
+                </label>
+                <div class="col-sm-8">
+                    <?php
+                    echo $this->forminput($form->get('email'));
+                    echo $this->formElementErrors($form->get('email'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4">
+                    <?php echo $this->formLabel($form->get('display_name')); ?>
+                </label>
+                <div class="col-sm-8">
+                    <?php
+                    echo $this->formInput($form->get('display_name'));
+                    echo $this->formElementErrors($form->get('display_name'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-4">
+                    <?php echo $this->formLabel($form->get('centre')); ?>
+                </label>
+                <div class="col-sm-8">
+                    <?php
+                    echo $this->formSelect($form->get('centre'));
+                    echo $this->formElementErrors($form->get('centre'));
+                    ?>
+                </div>
+            </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="submit" name="submit" class="btn btn-primary">Valider</button>
+            <span>
+                <button type="reset" name="rest" value="Annuler" class="btn btn-default">Annuler</button>
+            </span>
+        </div>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>

@@ -1,0 +1,78 @@
+<?php
+$title = 'Planning';
+$this->headTitle($title);
+
+$this->headLink()
+        ->prependStylesheet($this->basePath('themes/datas/css/calendar.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/calendar-master/vendors/fullcalendar/fullcalendar.print.css'), 'print')
+        ->prependStylesheet($this->basePath('themes/datas/assets/calendar-master/vendors/fullcalendar/fullcalendar.css'));
+?>
+
+<!-- Page Level JS -->
+<?php
+$this->inlineScript()
+        ->appendFile($this->basePath('themes/datas/assets/calendar-master/vendors/fullcalendar/lib/moment.min.js'))
+        ->appendFile($this->basePath('themes/datas/assets/calendar-master/vendors/fullcalendar/lib/jquery-ui.custom.min.js'))
+        ->appendFile($this->basePath('themes/datas/assets/calendar-master/vendors/fullcalendar/fullcalendar.min.js'))
+        ->appendFile($this->basePath('themes/datas/assets/calendar-master/vendors/fullcalendar/lang/fr.js'));
+?>
+<?php
+$obj = array();
+foreach ($entrs as $entr) {
+    if ($entr->Rdv_Horo) {
+        $myObj['title'] = $entr->Doss;
+        $myObj['start'] = $entr->Rdv_Horo;
+        $obj[] = $myObj;
+    }
+}
+$myJSON = json_encode($obj);
+?>
+<!-- row -->
+<div class="row">
+    <div class="col-md-12 table-responsive">
+        <div class="panel panel-primary-border-top">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title pull-left" style="padding-top: 7.5px;">
+                    Planning
+                </h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="clearfix">
+                        <div class="calendar1">
+                            <div class="col-md-12 calendar-view">
+                                <div id='calendar'></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #row -->
+<!-- App JS -->
+<script>
+    $(document).ready(function () {
+        /* initialize the calendar
+         -----------------------------------------------------------------*/
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev',
+                center: 'title, agendaDay,agendaWeek,month',
+                right: 'next',
+                default: true
+            },
+            prev: 'fa fa-arrow',
+            next: 'right-single-arrow',
+            defaultView :"agendaDay",
+            minTime : "08:00",
+            maxTime : "17:00",
+            defaultTimedEventDuration: '01:00:00',
+            events: <?php echo $myJSON; ?>
+        });
+    });
+    $(document).on("click", ".fc-event-container .fc-event", function () {
+        $(this).toggleClass('view');
+    });
+</script>

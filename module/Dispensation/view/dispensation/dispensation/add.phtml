@@ -1,0 +1,1021 @@
+<?php
+$title = 'Dispensation';
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('dispensation', array('action' => 'add')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+?>
+<?php
+$this->headLink()
+        ->prependStylesheet($this->basePath('themes/datas/css/sweet-alert.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Select/css/select.dataTables.min.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/bootstrap-select-master/docs/docs/dist/css/bootstrap-select.min.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/media/css/dataTables.bootstrap.css'));
+
+$this->inlineScript()
+        ->appendFile($this->basePath('themes/datas/assets/sweetalert-master/dist/sweetalert-dev.js'))
+        ->appendFile($this->basePath('themes/datas/assets/bootstrap-table-develop/dist/bootstrap-table.min.js'))
+        ->appendFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/jquery.dataTables.js'))
+        ->appendFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/dataTables.bootstrap.js'))
+        ->appendFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Select/js/dataTables.select.min.js'))
+        ->appendFile($this->basePath('themes/datas/assets/bootstrap-select-master/docs/docs/dist/js/bootstrap-select.min.js'))
+        ->appendFile($this->basePath('themes/datas/assets/bootstrap-select-master/js/i18n/defaults-fr_FR.js'));
+?>
+<style>
+    th { font-size: 13px; }
+    td { font-size: 12px; }
+    .row{
+        margin-top: 0px;
+        margin-bottom: 0px
+    }
+
+</style>
+<div id="page-content-wrapper">
+    <?php echo $this->form()->openTag($form); ?>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title col-sm-4">Délivrer</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="examples col-md-12">
+                    <li class="message">
+                        <button type="button" class="btn btn-inverse" id="Nonenombre" style="display : none">Click Here!</button>
+                    </li>
+                    <li class="warning confirm">
+                        <button type="button" class="btn btn-warning" id="Alertmsg" style="display : none">Click Here!</button>
+                    </li>
+                </ul>
+                <?php
+                echo $this->formHidden($form->get('Nume'));
+                ?>
+                <?php
+                echo $this->formHidden($form->get('Stoc'));
+                echo $this->formHidden($form->get('Obsehidden'));
+                echo $this->formHidden($form->get('Mediconshidden'));
+                echo $this->formHidden($form->get('Itemhidden'));
+                ?>       
+                <ul class="nav nav-tabs" id="ulnavtab">
+                    <li class="active"><a href="#Prescription" data-toggle="tab" id="prescription">Prescription</a></li>
+                    <li><a href="#Medicaments" data-toggle="tab" id="medicaments">Medicaments</a></li>
+                    <li><a href="#Consommables" data-toggle="tab" id="consommable">Consommables</a></li>
+                    <li><a href="#Historique" data-toggle="tab" id="historique">Historique</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="Prescription">
+                        <div class="panel panel-primary-border-top">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="prsctable">
+                                        <thead>
+                                            <tr>
+                                                <th><b></b></th>
+                                                <th><b>Observance</b></th>
+                                                <th><b>Date</b></th>
+                                                <th><b>Prescription</b></th>
+                                                <th><b></b></th>
+                                                <th><b></b></th>
+                                                <th><b>Délivré</b></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($prsc as $prscs) : ?>
+                                                <tr>
+                                                    <td><?php echo $this->escapeHtml($prscs['Nume']); ?></td>
+                                                    <td>
+                                                        <a data-toggle="modal" data-target="#addmot" title="Nouveau" title="Observance" class="obse btn btn-sm btn-primary  btn-outline btn-rounded" href="<?php echo $this->url('dispensation', array('action' => 'addobs', 'Nume' => $prscs['Numero'])); ?>" id="<?php echo $prscs['Numero']; ?>">
+                                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                                        </a>
+                                                    </td>
+                                                    <td><?php echo $this->escapeHtml($prscs['Dat_']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($prscs['Prsc']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($prscs['Nbr']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($prscs['Form']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($prscs['delivre']); ?></td>
+                                                </tr> 
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Medicaments">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="meditable">
+                                    <thead>
+                                        <tr>
+                                            <th><b>Designation </b></th>
+                                            <th><b>Nombre d'unités</b></th>
+                                            <th><b>Fabricant</b></th>
+                                            <th><b>N° de lot</b></th>
+                                            <th><b>Date de péremption</b></th>
+                                            <th><b>Proche</b></th>
+                                            <th><b>Action</b></th>
+                                            <th><b>gale</b></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $i = 0;
+                                        if ($medicament)
+                                            foreach ($medicament as $dossier) :
+                                                ?>
+                                                <tr id="<?php echo $i; ?>">
+                                                    <td><?php echo $this->escapeHtml($dossier['Desi']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Nbr']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Fabr']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Lot']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Date']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['proche']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Nume']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['gale']); ?></td>
+                                                </tr> 
+                                                <?php
+                                                $i++;
+                                            endforeach;
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Consommables">
+                        <div class="panel-body"> 
+                            <div class="table-responsive">
+                                <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="constable">
+                                    <thead>
+                                        <tr>
+                                            <th><b>Designation </b></th>
+                                            <th><b>Nombre d'unités</b></th>
+                                            <th><b>Fabricant</b></th>
+                                            <th><b>N° de lot</b></th>
+                                            <th><b>Date de péremption</b></th>
+                                            <th><b>Proche</b></th>
+                                            <th><b>Action</b></th>
+                                            <th><b>gale</b></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $i = 0;
+                                        if ($consommable)
+                                            foreach ($consommable as $dossier) :
+                                                ?>
+                                                <tr id="<?php echo $i; ?>">
+
+                                                    <td><?php echo $this->escapeHtml($dossier['Desi']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Nbr']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Fabr']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Lot']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Date']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['proche']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Nume']); ?> </td>
+                                                    <td><?php echo $this->escapeHtml($dossier['gale']); ?> </td>
+
+                                                </tr> 
+                                                <?php
+                                                $i++;
+                                            endforeach;
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Historique">
+                        <div class="panel-body"> 
+                            <div class="table-responsive">
+                                <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="histtable">
+                                    <thead>
+                                        <tr>
+                                            <th><b>Date</b></th>
+                                            <th><b>Désignation</b></th>
+                                            <th><b>Quantité</b></th>
+                                            <th><b></b></th>
+                                            <th><b>Action</b></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $i = 0;
+                                        if ($item)
+                                            foreach ($item as $dossier) :
+                                                ?>
+                                                <tr id="<?php echo $i; ?>">
+                                                    <td><?php echo substr($this->escapeHtml($dossier['Date']), 0, -9); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Desi']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Qte']); ?></td>
+                                                    <td><?php echo $this->escapeHtml($dossier['Util']); ?></td>
+                                                    <td>
+                                                        <a title="Supprimer" class="supitem btn btn-sm btn-danger" href="#" id="<?php echo $dossier['Nume']; ?>">
+                                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                        </a>
+                                                    </td>
+                                                </tr> 
+                                                <?php
+                                                $i++;
+                                            endforeach;
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group pull-left">
+                    <button type="button" class="btn btn-warning  btn-outline btn-rounded" id="btndelivre" data-toggle="modal" href="#modalform">Délivrer</button>  
+                    <span>&nbsp;
+                        <button type="button" class="btn btn-info  btn-outline btn-rounded" data-toggle="modal" href="#medidelivreform">Aperçu</button>  
+                    </span>&nbsp;
+                </div>
+                <div class="btn-group pull-right">
+                    <span>&nbsp;
+                        <button type="submit" name="submit" id="bntvalid" class="btn btn-primary btn-outline btn-rounded">Valider</button>
+                    </span>&nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modalform" class="modal fade" tabindex="-1"  aria-labelledby="" aria-hidden="true" >
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Délivrer</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="formdelivrance" style="display : block">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <?php echo $this->formLabel($form->get('NombUnit')); ?>
+                                </label>
+                                <div class="col-sm-9">
+                                    <?php
+                                    echo $this->formInput($form->get('NombUnit'));
+                                    echo $this->formElementErrors($form->get('NombUnit'));
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <?php echo $this->formLabel($form->get('Dat_')); ?>
+                                </label>
+                                <div class="col-sm-9">
+                                    <?php
+                                    echo $this->formInput($form->get('Dat_'));
+                                    echo $this->formElementErrors($form->get('Dat_'));
+                                    ?>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button name="delivre" type="button" class="btn btn-primary" id="delivre">Délivrer</button>
+                    <span>
+                        <button type="reset" data-dismiss="modal" name="rest" value="Annuler" class="btn btn-default" aria-label="Close" id="reset">Annuler</button>
+                    </span>
+                </div>  
+            </div>
+        </div>
+    </div>
+    <div id="medidelivreform" class="modal fade" tabindex="-1"  aria-labelledby="" aria-hidden="true" >
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Médicaments délivrés</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <?php echo $this->formLabel($form->get('Nota')); ?>
+                                </label>
+                                <div class="col-sm-8">
+                                    <?php
+                                    echo $this->formTextarea($form->get('Nota'));
+                                    echo $this->formElementErrors($form->get('Nota'));
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <span>
+                        <button type="reset" data-dismiss="modal" name="rest" value="Annuler" class="btn btn-default" aria-label="Close" id="reset">Fermer</button>
+                    </span>
+                </div>  
+            </div>
+        </div>
+    </div>
+
+
+    <?php echo $this->form()->closeTag() ?>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        var stock = <?php echo json_encode($stock); ?>;
+        var nomb = "";
+        stock = stock + "";
+        stock = stock.split("xy9k");
+        var id = 0;
+        var iditemadd = 1;
+        var errmsg = "";
+        var donnee = Array();
+        var donneeprsc = Array();
+        var obsecons = <?php echo json_encode($Obsecons); ?>;
+        var chaine = conversion(obsecons);
+        $('#Obsehidden').val(chaine);
+        var medicons = <?php echo json_encode($Medicons); ?>;
+        var chaine = conversion(medicons);
+        $('#Mediconshidden').val(chaine);
+        var item = <?php echo json_encode($itemjs); ?>;
+        var chaine = conversion(item);
+        $('#Itemhidden').val(chaine);
+        var rowindex = "";
+        var datatable = "";
+        var row = "";
+        var rowprsc = "";
+        var prsctable = $('#prsctable').DataTable({
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            responsive: true,
+            "language": {
+                "decimal": "",
+                "emptyTable": "aucune donnée disponible",
+                "info": "Affichage de _START_ à _END_ de _TOTAL_ medicaments",
+                "infoEmpty": "Affichage 0 à 0 de 0 medicaments",
+                "infoFiltered": "(Filtré de _MAX_ medicaments totales)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Afficher _MENU_ medicaments",
+                "loadingRecords": "Chargement...",
+                "processing": "En traitement...",
+                "search": "<b>Rechercher:</b>",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+                "aria": {
+                    "sortAscending": ": Activer pour trier la colonne en ordre croissant",
+                    "sortDescending": ": Activer pour trier la colonne en descendant"
+                }
+            },
+            select: {
+                style: 'single'
+            },
+            // "bPaginate": false,
+            "bLengthChange": false,
+            "info": false,
+            "ordering": false,
+            "iDisplayLength": 10,
+            "aLengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]]
+        });
+        var meditable = $('#meditable').DataTable({
+            "columnDefs": [
+                {
+                    "targets": [5],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [6],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [7],
+                    "visible": false,
+                    "searchable": false
+                },
+            ],
+            select: {
+                style: 'single'
+            },
+            "language": {
+                "decimal": "",
+                "emptyTable": "aucune donnée disponible",
+                "info": "Affichage de _START_ à _END_ de _TOTAL_ entrées",
+                "infoEmpty": "Affichage 0 à 0 de 0 entrées",
+                "infoFiltered": "(Filtré de _MAX_ entrées totales)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Afficher _MENU_ Entrées",
+                "loadingRecords": "Chargement...",
+                "processing": "En traitement...",
+                "search": "<b>Rechercher:</b>",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+                "aria": {
+                    "sortAscending": ": Activer pour trier la colonne en ordre croissant",
+                    "sortDescending": ": Activer pour trier la colonne en descendant"
+                }
+            },
+            "bLengthChange": false,
+            "info": false,
+            "dom": 'frt<"bottom"p><"clear">',
+            "ordering": false,
+        });
+        var constable = $('#constable').DataTable({
+            "columnDefs": [
+                {
+                    "targets": [5],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [6],
+                    "visible": false,
+                    "searchable": false
+                },
+                {
+                    "targets": [7],
+                    "visible": false,
+                    "searchable": false
+                },
+            ],
+            select: {
+                style: 'single'
+            },
+            "language": {
+                "decimal": "",
+                "emptyTable": "aucune donnée disponible",
+                "info": "Affichage de _START_ à _END_ de _TOTAL_ entrées",
+                "infoEmpty": "Affichage 0 à 0 de 0 entrées",
+                "infoFiltered": "(Filtré de _MAX_ entrées totales)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Afficher _MENU_ Entrées",
+                "loadingRecords": "Chargement...",
+                "processing": "En traitement...",
+                "search": "<b>Rechercher:</b>",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+                "aria": {
+                    "sortAscending": ": Activer pour trier la colonne en ordre croissant",
+                    "sortDescending": ": Activer pour trier la colonne en descendant"
+                }
+            },
+            "bLengthChange": false,
+            "info": false,
+            "dom": 'frt<"bottom"p><"clear">',
+            "ordering": false,
+        });
+        var histtable = $('#histtable').DataTable({
+            "columnDefs": [
+                {
+                    "targets": [3],
+                    "visible": false,
+                    "searchable": false
+                }
+            ],
+            "language": {
+                "decimal": "",
+                "emptyTable": "aucune donnée disponible",
+                "info": "Affichage de _START_ à _END_ de _TOTAL_ entrées",
+                "infoEmpty": "Affichage 0 à 0 de 0 entrées",
+                "infoFiltered": "(Filtré de _MAX_ entrées totales)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Afficher _MENU_ Entrées",
+                "loadingRecords": "Chargement...",
+                "processing": "En traitement...",
+                "search": "<b>Rechercher:</b>",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+                "aria": {
+                    "sortAscending": ": Activer pour trier la colonne en ordre croissant",
+                    "sortDescending": ": Activer pour trier la colonne en descendant"
+                }
+            },
+            "bLengthChange": false,
+            "info": false,
+            "dom": 'frt<"bottom"p><"clear">',
+            "ordering": false,
+        });
+
+
+        function  removeclass(table, indexc) {
+            table.rows().eq(0).each(function (index) {
+                if (index != indexc)
+                    table.rows(index)
+                            .nodes()
+                            .to$()
+                            .removeClass('selected');
+
+            });
+        }
+        $('#prsctable').on('click', 'tbody tr', function () {
+            rowprsc = this;
+            var indexc = prsctable.row(this).index();
+            removeclass(prsctable, indexc);
+            removeclass(meditable, -5000); //enleve tout
+            removeclass(constable, -5000); //enleve tout
+            var vrow = setproche(rowprsc);
+            if (vrow != "") {
+                var vdata = vrow.data();
+                vdata[5] = "OK";
+                meditable.row(vrow).data(vdata).draw(false);
+                meditable.row(vrow.index())
+                        .nodes()
+                        .to$()
+                        .addClass('selected');
+                datatable = meditable;
+                row = vrow;
+                meditable.search(vdata[0]).draw();
+                document.getElementById('btndelivre').disabled = false;
+            }
+            else {
+                rowprsc = "";
+                row = "";
+                meditable.search('').draw();
+                document.getElementById('btndelivre').disabled = true;
+            }
+
+        });
+        function setproche(rowp) {
+            var dontab = prsctable.row(rowprsc).data();
+            var medoc;
+            var vrow = "";
+            var vdata;
+            if (dontab[3])
+            {
+                medoc = dontab[3].split(':');
+                var cpt = 0;
+
+                meditable.rows().eq(0).each(function (index) {
+                    var row = meditable.row(index);
+                    var data = row.data();
+                    if (medoc[0] === data[0]) {
+                        if (cpt == 0) {
+                            vrow = row;
+                            vdata = vrow.data();
+                        }
+                        else {
+                            var date = data[4].split('/');
+                            var vdate = vdata[4].split('/');
+                            if (parseInt(date[1]) < parseInt(vdate[1])) {
+                                vrow = row;
+                                vdata = vrow.data();
+                            }
+                            if (parseInt(date[1]) == parseInt(vdate[1])) {
+                                if (parseInt(date[0]) < parseInt(vdate[0]))
+                                {
+                                    vrow = row;
+                                    vdata = vrow.data();
+                                }
+                            }
+                        }
+                        cpt++;
+                    }
+                });
+            }
+            return(vrow);
+        }
+        $('#meditable').on('click', 'tbody tr', function () {
+            document.getElementById('btndelivre').disabled = false;
+            var indexc = meditable.row(this).index();
+            removeclass(meditable, indexc);
+            removeclass(constable, -5000); //enleve tout
+            datatable = meditable;
+            row = this;
+            if (rowprsc) {
+                var datamedi = meditable.row(this).data();
+                var dataprsc = prsctable.row(rowprsc).data();
+                if (datamedi[0] !== dataprsc[3])
+                {
+                    rowprsc = "";
+                }
+            }
+        });
+        $('#constable').on('click', 'tbody tr', function () {
+            var indexc = constable.row(this).index();
+            removeclass(constable, indexc);
+            removeclass(meditable, -5000); //enleve tout
+
+            datatable = constable;
+            row = this;
+            if (rowprsc) {
+                var datacons = constable.row(this).data();
+                var dataprsc = prsctable.row(rowprsc).data();
+                if (datacons[0] !== dataprsc[3])
+                {
+                    rowprsc = "";
+                }
+            }
+        });
+        $('#bntvalid').click(function () {
+            var chaine = "";
+            for (var i = 0; i < stock.length; i++) {
+                chaine += stock[i];
+                if (i < stock.length - 1) {
+                    chaine += 'xy9k';
+                }
+            }
+            $('#stoc').val(chaine);
+        });
+        $('#btndelivre').click(function () {
+            donneeprsc = Array();
+            // if (prsctable.rows( '.selected' ).any() ) {
+            if (rowprsc) {
+                donneeprsc = prsctable.row(rowprsc).data();
+                $('#NombUnit').val(donneeprsc[4]);
+            }
+            // }
+            else
+                $('#NombUnit').val('');
+        });
+        document.querySelector('ul.examples li.warning.confirm button').onclick = function () {
+            swal({
+                title: "Confirmez-vous ce choix?",
+                text: "Vous n'avez pas choisi le produit dont la date de préemption est la plus proche !",
+                type: "warning",
+                showCancelButton: true,
+                cancelButtonText: 'Annuler',
+                confirmButtonText: 'OK !',
+                closeOnConfirm: true
+            },
+            function () {
+                donneeprsc = Array();
+                if (rowprsc) {
+                    // if ( prsctable.rows( '.selected' ).any() ) {
+                    donneeprsc = prsctable.row(rowprsc).data();
+                }
+                $('#modalform').modal('hide');
+                traitement(donnee, donneeprsc);
+            });
+        };
+        document.querySelector('ul.examples li.message button').onclick = function () {
+            swal(errmsg);
+        };
+        document.getElementById('bntvalid').disabled = true;
+        document.getElementById('btndelivre').disabled = true;
+        function traitement(donnee, donneeprsc) {
+            var qte = parseInt(donnee[1]);
+            var nb = 0;
+            if ($('#NombUnit').val() && $('#Dat_').val())
+            {
+                nb = parseInt($('#NombUnit').val());
+                if (nb <= qte) {
+                    qte = qte - nb;
+                    $('#Nota').val($('#Nota').val() + $('#NombUnit').val() + " " + donnee[0] + "\n");
+                    $('#NombUnit').val("");
+                    //mise ajour var stock
+                    id = parseInt(id);
+                    stock[id + 5] = parseInt(stock[id + 5]) - parseInt(nb);
+                    var tab = Array();
+                    tab['Nume'] = 'add' + iditemadd;
+                    tab['Util'] = -40;
+                    tab['Modi'] = '';
+                    tab['Dat_'] = document.getElementById('Dat_').value;
+                    tab['Dest'] = 6;
+                    tab['Doss'] = <?php echo "'".$Nume."'";  ?>;
+                    tab['Expi'] = stock[id + 3].split('/').reverse().join('-');
+                    tab['Fabr'] = stock[id + 1];
+                    tab['Lot_'] = stock[id + 2];
+                    tab['MediCons'] = "";
+                    tab['MediConsPrsc'] = "";
+                    var num = '#';
+                    if (rowprsc) {
+                        if (donneeprsc[0]) {
+                            num = donneeprsc[0].split('#');
+                            var ident = num[0];
+                            tab['MediCons'] = ident;
+                            tab['MediConsPrsc'] = num[1];
+                            num = donneeprsc[0];
+                        }
+                    }
+                    tab['NombBoit'] = 0;
+                    tab['NombUnit'] = nb;
+                    tab['Paim'] = 0;
+                    tab['Prod'] = stock[id];
+                    tab['Sour'] = 4;
+                    tab['count'] = '';
+                    tab['prefixe'] = '<?php echo $prefixe; ?>';
+                    tab['Action'] = "Action";
+                    $('#Itemhidden').val(ajout(tab, $('#Itemhidden').val()));
+                    var design = donnee[0] + " exp. " + donnee[4] + " lot " + donnee[3];
+                    var nomb = nb + " " + donnee[7];
+                    histtable.row.add([
+                        tab['Dat_'],
+                        design,
+                        nomb,
+                        num,
+                        '<a title="Supprimer" class="supitem btn btn-sm btn-danger" href="#" id=' + tab['Nume'] + '><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>'
+                    ]).draw(false);
+                    iditemadd++;
+                }
+            }
+
+            if (donneeprsc[0]) {
+                var delivrer = 0;
+                if (donneeprsc[6])
+                {
+                    delivrer = parseInt(donneeprsc[6]);
+                }
+                delivrer += nb;
+                donneeprsc[6] = delivrer + "";
+                prsctable.row(rowprsc).data(donneeprsc).draw(false);
+                ///maj medicons
+                majmedicons(donneeprsc, delivrer);
+            }
+            donnee[1] = qte;
+            datatable.row(row).data(donnee).draw(false);
+            document.getElementById('bntvalid').disabled = false;
+            //document.getElementById('btndelivre').disabled = true;
+            //datatable="";
+        }
+        function majmedicons(donneeprsc, delivrer) {
+            var num = donneeprsc[0].split('#');
+            var ident = num[0];
+            var valeur = affiche(ident, $('#Mediconshidden').val());
+            var tab = Array();
+            tab['Nume'] = ident;
+            tab['Arv0Serv'] = valeur[1];
+            tab['Arv1Serv'] = valeur[2];
+            tab['Arv2Serv'] = valeur[3];
+            tab['Arv3Serv'] = valeur[4];
+            tab['Arv4Serv'] = valeur[5];
+            tab['Arv5Serv'] = valeur[6];
+            tab['Arv6Serv'] = valeur[7];
+            tab['Arv7Serv'] = valeur[8];
+            tab['Arv8Serv'] = valeur[9];
+            tab['Arv9Serv'] = valeur[10];
+            tab['Med0Serv'] = valeur[11];
+            tab['Med1Serv'] = valeur[12];
+            tab['Med2Serv'] = valeur[13];
+            tab['Med3Serv'] = valeur[14];
+            tab['Med4Serv'] = valeur[15];
+            tab['Med5Serv'] = valeur[16];
+            tab['Med6Serv'] = valeur[17];
+            tab['Med7Serv'] = valeur[18];
+            tab['Med8Serv'] = valeur[19];
+            tab['Med9Serv'] = valeur[20];
+            tab['Action'] = 'Action';
+            tab[num[1] + 'Serv'] = delivrer + "";
+            var str = modification(tab, $('#Mediconshidden').val());
+            $('#Mediconshidden').val(str);
+        }
+        $('#delivre').on('click', function () {
+            if (datatable != "") {
+                donnee = datatable.row(row).data();
+                console.log(donnee);
+                donneeprsc = Array();
+                if (prsctable.rows('.selected').any()) {
+                    donneeprsc = prsctable.row(rowprsc).data();
+                    var med = donneeprsc[3].split(':');
+                    med = med[0].toLowerCase();
+                    if (med !== donnee[0]) {
+                        donneeprsc = [];
+                    }
+                }
+                var proche = donnee[5];
+                id = donnee[6];
+                if (!$('#NombUnit').val() || !$('#Dat_').val()) {
+                    if (!$('#NombUnit').val()) {
+                        errmsg = "Veuillez saisir un nombre!";
+                        $('#Nonenombre').click();
+                    }
+                    else {
+                        errmsg = "Veuillez saisir une date.!";
+                        $('#Nonenombre').click();
+                    }
+                }
+                else {
+                    var qte = parseInt(donnee[1]);
+                    var nb = parseInt($('#NombUnit').val());
+                    if (nb < 0) {
+                        errmsg = "Saisir un nombre positif.";
+                        $('#Nonenombre').click();
+                    }
+                    else
+                    {
+                        if (nb > qte) {
+                            errmsg = "Saisir un nombre inférieur ou égal au stock.";
+                            $('#Nonenombre').click();
+                        }
+                        else {
+                            if (proche === "OK") {
+                                $('#modalform').modal('hide');
+                                traitement(donnee, donneeprsc);
+                            }
+                            else {
+                                $('#Alertmsg').click();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        $('#histtable').on('click', 'tbody tr a', function () {
+            document.getElementById('bntvalid').disabled = false;
+            var rowdel = $(this).closest('tr');
+            var donneehist = histtable.row(rowdel).data();
+            removeclass(meditable, -5000);
+            removeclass(prsctable, -5000);
+            removeclass(constable, -5000);
+            prsctable.rows().eq(0).each(function (index) {
+                var row = prsctable.row(index);
+                var data = row.data();
+                if (donneehist[3] === data[0]) {
+                    prsctable.rows(index)
+                            .nodes()
+                            .to$()
+                            .addClass('selected');
+                    var nbdeli = donneehist[2].split(" ");
+                    nbdeli = parseInt(data[6]) - parseInt(nbdeli[0])
+                    data[6] = "" + nbdeli + "";
+                    prsctable.row(index).data(data).invalidate();
+                    majmedicons(data, nbdeli);
+                }
+            });
+            meditable.rows().eq(0).each(function (index) {
+                var row = meditable.row(index);
+                var data = row.data();
+                var donnestock = donneehist[1].split(" exp. ");
+                var donnestock1 = donnestock[1].split(" lot ");
+                var trouve = 0;
+                if (trouve == 0 && donnestock[0] === data[0] && donnestock1[0] === data[4] && donnestock1[1] === data[3])
+                {
+                    trouve = 1;
+                    meditable.rows(index)
+                            .nodes()
+                            .to$()
+                            .addClass('selected');
+                    var nbdeli = donneehist[2].split(" ");
+                    nbrest = parseInt(data[1]) + parseInt(nbdeli[0]);
+                    data[1] = "" + nbrest + "";
+                    meditable.row(index).data(data).invalidate();
+                    //maj stock
+                    id = parseInt(data[6]);
+                    stock[id + 5] = parseInt(stock[id + 5]) + parseInt(nbdeli[0]);
+
+                }
+            });
+            constable.rows().eq(0).each(function (index) {
+                var row = constable.row(index);
+                var data = row.data();
+                var donnestock = donneehist[1].split(" exp. ");
+                var donnestock1 = donnestock[1].split(" lot ");
+                var trouve = 0;
+                if (trouve == 0 && donnestock[0] === data[0] && donnestock1[0] === data[4] && donnestock1[1] === data[3])
+                {
+                    trouve = 1;
+                    constable.rows(index)
+                            .nodes()
+                            .to$()
+                            .addClass('selected');
+                    var nbdeli = donneehist[2].split(" ");
+                    nbrest = parseInt(data[1]) + parseInt(nbdeli[0]);
+                    data[1] = "" + nbrest + "";
+                    constable.row(index).data(data).invalidate();
+                    //maj stock
+                    id = parseInt(data[6]);
+                    stock[id + 5] = parseInt(stock[id + 5]) + parseInt(nbdeli[0]);
+
+                }
+            });
+
+            var id = this.id;
+            $('#Itemhidden').val(suppression(id, $('#Itemhidden').val()));
+            var tr = $(this).closest('tr');
+            histtable.row(tr).remove().draw(false);
+            $('#Nota').val("");
+        });
+    });
+    function conversion(socicons)
+    {
+        //console.log(socicons);
+        var chaine = "";
+        var i = 0;
+        for (var i = 0; i < socicons.length; i++)
+        {
+            for (var indice in socicons[i])
+            {
+                if (indice !== 'inputFilter')
+                {
+                    if (socicons[i][indice] == null)
+                    {
+                        chaine += '#';
+                    }
+                    else
+                        chaine += socicons[i][indice] + '#';
+                }
+
+
+            }
+            chaine += 'Action$';
+        }
+        return(chaine);
+    }
+    function affiche(id, str)
+    {
+        if (str !== null) {
+            var strl = str.split("$");
+            var strc = null;
+            for (var i = 0; i < strl.length - 1; i++)
+            {
+                strc = strl[i].split("#");
+                if (strc[0] === id)  //si enreg
+                    break;
+            }
+        }
+        return(strc);
+    }
+
+    function ajout(tab, chaine)
+    {
+        if (tab['Dat_'])
+            tab['Dat_'] = tab['Dat_'].split("/").reverse().join("-");
+        for (var indice in tab)
+        {
+            if (indice !== 'Action')
+                chaine += tab[indice] + '#';
+        }
+        chaine += "add$";
+        return(chaine);
+    }
+
+
+    function modification(tab, str)
+    {
+
+        var strl = str.split("$");
+        var strc = null;
+        var chaine = "";
+        for (var i = 0; i < (strl.length - 1); i++)
+        {
+            strc = strl[i].split("#");
+            if (strc[0] === tab['Nume'])  //si enreg a modifier
+            {
+                for (var indice in tab)
+                {
+                    if (indice != 'Action')
+                        chaine += tab[indice] + '#';
+                }
+                chaine += "edit$";
+            }
+            else {
+                chaine += strl[i] + "$";
+            }
+        }
+        return(chaine);
+    }
+    function suppression(id, str)
+    {
+        var strl = str.split("$");
+        var strc;
+        var chaine = "";
+        for (var i = 0; i < (strl.length - 1); i++)
+        {
+            strc = strl[i].split("#");
+            if (strc[0] === id)  //si enreg a modifier
+            {
+                for (var j = 0; j < (strc.length - 1); j++)
+                    chaine += strc[j] + "#";
+                chaine += "del$";
+            }
+            else {
+                chaine += strl[i] + "$";
+            }
+        }
+        return(chaine);
+    }
+
+
+</script>

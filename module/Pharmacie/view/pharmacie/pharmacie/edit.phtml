@@ -1,0 +1,187 @@
+<?php
+$title = 'Modifier une entrée';
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('pharmacie', array('action' => 'edit')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+?>
+
+<?php echo $this->form()->openTag($form); ?>
+<div class="modal-header">
+    <h4 class="modal-title">Modifier une entrée
+		<a href="<?php echo $this->url('pharmacie'); ?>" class="btn btn-warning btn-outline btn-rounded pull-right">Fermer</a>
+	</h4>
+</div>
+<div class="modal-body">
+    
+    <?php
+    echo $this->formHidden($form->get('Nume'));
+    ?>
+    <?php
+    echo $this->Nume;
+    ?>
+    <div class="form-group">
+        <label class="control-label col-sm-3">
+            <?php ""; ?>
+        </label>
+        <div class="col-sm-9">
+            <?php
+            echo $this->formSelect($form->get('Selectype'));
+            echo $this->formElementErrors($form->get('Selectype'));
+            ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3">
+            <?php echo ""; ?>
+        </label>
+        <div class="col-sm-9">
+            <?php
+            echo $this->formSelect($form->get('Prod'));
+            echo $this->formElementErrors($form->get('Prod'));
+            ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3">
+            <?php echo $this->formLabel($form->get('Lot_')); ?>
+        </label>
+        <div class="col-sm-9">
+            <?php
+            echo $this->formInput($form->get('Lot_'));
+            echo $this->formElementErrors($form->get('Lot_'));
+            ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3">
+            <?php echo $this->formLabel($form->get('Expi_moi')); ?>
+        </label>
+        <div class="col-sm-5">
+            <?php
+            echo $this->formSelect($form->get('Expi_moi'));
+            echo $this->formElementErrors($form->get('Expi_moi'));
+            ?>
+        </div>
+        <div class="col-sm-4">
+            <?php
+            echo $this->formSelect($form->get('Expi_annee'));
+            echo $this->formElementErrors($form->get('Expi_annee'));
+            ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3">
+            <?php echo $this->formLabel($form->get('NombBoit')); ?>
+        </label>
+        <div class="col-sm-9">
+            <?php
+            echo $this->formInput($form->get('NombBoit'));
+            echo $this->formElementErrors($form->get('NombBoit'));
+            ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3">
+            <?php echo $this->formLabel($form->get('Prov')); ?>
+        </label>
+        <div class="col-sm-9">
+            <?php
+            echo $this->formSelect($form->get('Prov'));
+            echo $this->formElementErrors($form->get('Prov'));
+            ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3">
+            <?php echo $this->formLabel($form->get('Fabr')); ?>
+        </label>
+        <div class="col-sm-9">
+            <?php
+            echo $this->formSelect($form->get('Fabr'));
+            echo $this->formElementErrors($form->get('Fabr'));
+            ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3">
+            <?php echo $this->formLabel($form->get('Chrg')); ?>
+        </label>
+        <div class="col-sm-9">
+            <?php
+            echo $this->formSelect($form->get('Chrg'));
+            echo $this->formElementErrors($form->get('Chrg'));
+            ?>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <?php echo $this->formInput($form->get('submit')) . ' ' . $this->formInput($form->get('rest')); ?>
+</div>
+<?php echo $this->form()->closeTag() ?>
+
+
+<?php
+$this->inlineScript()
+        ->appendFile($this->basePath('datatables-plugins/dataTables.bootstrap.min.js'))
+        ->appendFile($this->basePath('datatables-responsive/dataTables.responsive.js'))
+        ->prependFile($this->basePath('datatables/js/jquery.dataTables.min.js'));
+?>
+<script>
+
+    $(document).ready(function () {
+        var medicament = <?php echo json_encode($medicament); ?>;
+        var arv = <?php echo json_encode($arv); ?>;
+        var consommable = <?php echo json_encode($consommable); ?>;
+        var laboratoire = <?php echo json_encode($laboratoire); ?>;
+        var prodnume = <?php echo $this->Prod; ?>;
+      $('#Selectype').on('change', function () {
+            var val = $(this).val();
+            $('#Prod').empty();
+            if (val === "1") {
+                for (var i = 0; i < medicament.length; i++)
+                {
+                    $('#Prod').append($('<option>', {
+                        value: medicament[i]['Nume'],
+                        text: medicament[i]['Desi']
+                    }));
+                }
+                $('#Prod').val(prodnume);
+            }
+            if (val === "2") {
+                for (var i = 0; i < consommable.length; i++)
+                {
+                    $('#Prod').append($('<option>', {
+                        value: consommable[i]['Nume'],
+                        text: consommable[i]['Desi']
+                    }));
+                }
+                $('#Prod').val(prodnume);
+            }
+            if (val === "3") {
+                for (var i = 0; i < arv.length; i++)
+                {
+                    $('#Prod').append($('<option>', {
+                        value: arv[i]['Nume'],
+                        text: arv[i]['Desi']
+                    }));
+                }
+                 $('#Prod').val(prodnume);
+            }
+            if (val === "4") {
+                for (var i = 0; i < laboratoire.length; i++)
+                {
+                    $('#Prod').append($('<option>', {
+                        value: laboratoire[i]['Nume'],
+                        text: laboratoire[i]['Desi']
+                    }));
+                }
+                $('#Prod').val(prodnume);
+            }
+
+        });
+    });
+
+
+</script>

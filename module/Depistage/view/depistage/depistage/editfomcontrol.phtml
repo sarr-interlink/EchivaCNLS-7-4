@@ -1,0 +1,304 @@
+<?php
+$this->headLink()
+        ->prependStylesheet($this->basePath('bootstrap-select.min.css'))
+        ->prependStylesheet($this->basePath('themes/datas/min/csk.min.css'));
+$this->inlineScript()
+        ->appendFile($this->basePath('bootstrap-select.min.js'))
+        ->appendFile($this->basePath('defaults-fr_FR.js'))
+        ->appendFile($this->basePath('themes/datas/js/validationform.js'));
+
+$title = 'Modification de dépistage';
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('depistage', array('action' => 'edit', 'Nume' => $this->Nume,)));
+$form->setAttribute('class', 'modal-form form-horizontal');
+$form->prepare();
+?>
+
+    <!-- #row -->
+			
+<?php echo $this->form()->openTag($form); ?>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <?php echo $this->formHidden($form->get('Nume')); ?>
+        <div class="modal-header">
+            <h4 class="modal-title"><?php echo $this->escapeHtml($title); ?>
+                <a href="<?php echo $this->url('depistage'); ?>" class="btn btn-warning btn-outline btn-rounded pull-right">Fermer</a>
+            </h4>
+        </div>
+        
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group number">
+                        <label class="control-label col-sm-3">Username</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="username" placeholder="Enter username">
+                        </div>
+                    </div>
+                    <div class="number">
+                        <label class="control-label col-sm-4">
+                            <?php echo $this->formLabel($form->get('Ref_')); ?>
+                        </label>
+                        <div class="col-sm-8">
+                            <?php
+                            echo $this->formInput($form->get('Ref_'));
+                            echo $this->formElementErrors($form->get('Ref_'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class=" number">
+                        <label class="control-label col-sm-4">
+                            <?php echo $this->formLabel($form->get('Nom_')); ?>
+                        </label>
+                        <div class="col-sm-8">
+                            <?php
+                            echo $this->formInput($form->get('Nom_'));
+                            echo $this->formElementErrors($form->get('Nom_'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="number">
+                         <label class="control-label col-sm-4">
+                            <?php echo $this->formLabel($form->get('Pnom')); ?>
+                        </label>
+                        <div class="col-sm-8">
+                            <?php
+                            echo $this->formInput($form->get('Pnom'));
+                            echo $this->formElementErrors($form->get('Pnom'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="number">
+                        <label class="control-label col-sm-4">
+                            <?php echo $this->formLabel($form->get('Age_')); ?>
+                        </label>
+                        <div class="col-sm-8">
+                            <?php
+                            echo $this->formInput($form->get('Age_'));
+                            echo $this->formElementErrors($form->get('Age_'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="number">
+                        <label class="control-label col-sm-4">
+                            <?php echo $this->formLabel($form->get('Sexe')); ?>
+                        </label>
+                        <div class="radio col-sm-8">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" class="primary" name="Sexe" value="1" <?php if ($form->get('Sexe')->getValue() == "1") echo "checked"; ?>> Masculin
+                                    <span class="cr "><i class="cr-icon glyphicon glyphicon-ok "></i></span>
+                                </label>
+                                <label>
+                                    <input type="radio" class="primary" name="Sexe" value="2" <?php if ($form->get('Sexe')->getValue() == "2") echo "checked"; ?>> Féminin
+                                    <span class="cr "><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="number">
+                        <label class="control-label col-sm-4">
+                            <?php echo $this->formLabel($form->get('Tel_')); ?>
+                        </label>
+                        <div class="col-sm-8">
+                            <?php
+                            echo $this->formInput($form->get('Tel_'));
+                            echo $this->formElementErrors($form->get('Tel_'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="number">
+                       <label class="control-label col-sm-7">
+                            <?php echo $this->formLabel($form->get('Circ')); ?>
+                        </label>
+                        <div class="col-sm-5">
+                            <?php
+                            echo $this->formSelect($form->get('Circ'));
+                            echo $this->formElementErrors($form->get('Circ'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="number">
+                        <label class="control-label col-sm-7">
+                            <?php echo $this->formLabel($form->get('Matr')); ?>
+                        </label>
+                        <div class="col-sm-5">
+                            <?php
+                            echo $this->formSelect($form->get('Matr'));
+                            echo $this->formElementErrors($form->get('Matr'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="number">
+                         <label class="control-label col-sm-7">
+                            <?php echo $this->formLabel($form->get('Prof')); ?>
+                        </label>
+                        <div class="col-sm-5">
+                            <?php
+                            echo $this->formSelect($form->get('Prof'));
+                            echo $this->formElementErrors($form->get('Prof'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="number">
+                        <label class="control-label col-sm-9">
+                            <?php  echo $this->formLabel($form->get('Nb__Chrg')); ?>
+                        </label>
+                        <div class="col-sm-3">
+                            <?php
+                            echo $this->formInput($form->get('Nb__Chrg'));
+                            echo $this->formElementErrors($form->get('Nb__Chrg'));
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    
+                    <div class="number">
+                        <label class="control-label col-sm-4">
+                            <?php echo $this->formLabel($form->get('DejaSero')); ?>
+                        </label>
+                        <div class="col-sm-4">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" class="primary" name="DejaSero" value="1" <?php if ($form->get('DejaSero')->getValue() == "1") echo "checked"; ?>> Positive
+                                    <span class="cr "><i class="cr-icon glyphicon glyphicon-ok "></i></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <?php
+                            echo $this->formSelect($form->get('DejaSeroTyp_'));
+                            echo $this->formElementErrors($form->get('DejaSeroTyp_'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="number">
+                        <label class="control-label col-sm-4">
+                        </label>
+                        <div class="col-sm-8">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" class="primary" name="DejaSero" value="2" <?php if ($form->get('DejaSero')->getValue() == "2") echo "checked"; ?>> Négative
+                                    <span class="cr "><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                </label>
+                                <label>
+                                    <input type="radio" class="primary" name="DejaSero" value="3" <?php if ($form->get('DejaSero')->getValue() == "3") echo "checked"; ?>> Indéterminée
+                                    <span class="cr "><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="number">
+                        <label class="control-label col-sm-4">
+                            <?php echo $this->formLabel($form->get('Dat_')); ?>
+                        </label>
+                        <div class="col-sm-8">
+                            <?php
+                            echo $this->formInput($form->get('Dat_'));
+                            echo $this->formElementErrors($form->get('Dat_'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="comment">
+                        <label class="control-label col-sm-4">
+                            <?php echo $this->formLabel($form->get('Observation')); ?>
+                        </label>
+                        <div class="col-sm-8">
+                            <?php
+                            echo $this->formTextarea($form->get('Observation'));
+                            echo $this->formElementErrors($form->get('Observation'));
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading clearfix">
+                            <h3 class="panel-title">Test</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <?php echo $this->formLabel($form->get('ConfDat_')); ?>
+                                </label>
+                                <div class="col-sm-8">
+                                    <?php
+                                    echo $this->formInput($form->get('ConfDat_'));
+                                    echo $this->formElementErrors($form->get('ConfDat_'));
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <?php echo $this->formLabel($form->get('ConfSero')); ?>
+                                </label>
+                                <div class="col-sm-4">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" class="primary" name="ConfSero" value="1" <?php if ($form->get('ConfSero')->getValue() == "1") echo "checked"; ?>> Positive
+                                            <span class="cr "><i class="cr-icon glyphicon glyphicon-ok "></i></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <?php
+                                    echo $this->formSelect($form->get('ConfSeroTyp_'));
+                                    echo $this->formElementErrors($form->get('ConfSeroTyp_'));
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                </label>
+                                <div class="col-sm-8">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" class="primary" name="ConfSero" value="2" <?php if ($form->get('ConfSero')->getValue() == "2") echo "checked"; ?> > Négative
+                                            <span class="cr "><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" class="primary" name="ConfSero" value="3" <?php if ($form->get('ConfSero')->getValue() == "3") echo "checked"; ?>> Indéterminée
+                                            <span class="cr "><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <?php echo $this->formLabel($form->get('ConfRetr')); ?>
+                                </label>
+                                <div class="col-sm-8">
+                                    <?php
+                                    echo $this->formInput($form->get('ConfRetr'));
+                                    echo $this->formElementErrors($form->get('ConfRetr'));
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <?php echo $this->formLabel($form->get('ObsConf')); ?>
+                                </label>
+                                <div class="col-sm-8">
+                                    <?php
+                                    echo $this->formTextarea($form->get('ObsConf'));
+                                    echo $this->formElementErrors($form->get('ObsConf'));
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" name="submit" value="Valider"  class="btn btn-primary btn-outline btn-rounded ">Valider</button>
+            <button type="reset" name="rest" value="Annuler" class="btn btn-default btn-outline btn-rounded pull-right" >Annuler</button>
+        </div>
+
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>

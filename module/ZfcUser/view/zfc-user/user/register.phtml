@@ -1,0 +1,137 @@
+
+<?php 
+$this->headLink()
+        ->prependStylesheet($this->basePath('bootstrap-select.min.css'));
+$this->inlineScript()
+        ->appendFile($this->basePath('bootstrap-select.min.js'))
+        ->appendFile($this->basePath('defaults-fr_FR.js'));
+
+
+if (!$this->enableRegistration) {
+    print "Registration is disabled";
+    return;
+}
+$form = $this->registerForm;
+$form->prepare();
+$form->setAttribute('action', $this->url('zfcuser/register'));
+$form->setAttribute('method', 'post');
+$form->setAttribute('autocomplete', 'off');
+?>
+
+<script type="text/javascript">
+    (function ($) {
+        $.fn.selectpicker.defaults = {
+            noneSelectedText: 'Profils',
+            noneResultsText: 'Aucun résultat pour {0}',
+            countSelectedText: function (numSelected, numTotal) {
+                return (numSelected > 1) ? "{0} éléments sélectionnés" : "{0} élément sélectionné";
+            },
+            maxOptionsText: function (numAll, numGroup) {
+                return [
+                    (numAll > 1) ? 'Limite atteinte ({n} éléments max)' : 'Limite atteinte ({n} élément max)',
+                    (numGroup > 1) ? 'Limite du groupe atteinte ({n} éléments max)' : 'Limite du groupe atteinte ({n} élément max)'
+                ];
+            },
+            multipleSeparator: ', ',
+            selectAllText: 'Tout Sélectionner',
+            deselectAllText: 'Tout Dé-selectionner',
+        };
+    })(jQuery);
+
+</script>
+<?php echo $this->form()->openTag($form) ?>
+        
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header modal-header-primary">
+            <h4 class="modal-title">
+                Ajouter Un Utilisateur
+                <a href="<?php echo $this->url('parametres'); ?>" class="btn btn-warning btn-outline btn-rounded pull-right">Fermer</a>
+            </h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('username')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('username'));
+                    echo $this->formElementErrors($form->get('username'));
+                    ?>
+                </div>
+            </div><br /><br />
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('display_name')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('display_name'));
+                    echo $this->formElementErrors($form->get('display_name'));
+                    ?>
+                </div>
+            </div><br /><br />
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('email')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('email'));
+                    echo $this->formElementErrors($form->get('email'));
+                    ?>
+                </div>
+            </div><br /><br />
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('password')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('password'));
+                    echo $this->formElementErrors($form->get('password'));
+                    ?>
+                </div>
+            </div><br /><br />
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('passwordVerify')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('passwordVerify'));
+                    echo $this->formElementErrors($form->get('passwordVerify'));
+                    ?>
+                </div>
+            </div><br /><br />
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('profil')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formSelect($form->get('profil'));
+                    echo $this->formElementErrors($form->get('profil'));
+                    ?>
+                </div>
+            </div><br /><br />
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('centre')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formSelect($form->get('centre'));
+                    echo $this->formElementErrors($form->get('centre'));
+                    ?>
+                </div>
+            </div><br /><br />
+        </div>
+        <div class="modal-footer">
+            <button type="submit" name="submit" value="Valider"  class="btn btn-primary btn-outline btn-rounded ">Valider</button>
+            <button type="reset" name="rest" value="Annuler" class="btn btn-default btn-outline btn-rounded pull-right" >Annuler</button>
+        </div>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>

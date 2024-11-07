@@ -1,0 +1,235 @@
+<!-- Full Calendar CSS -->
+<link href="themes/datas/assets/calendar-master/vendors/fullcalendar/fullcalendar.css" rel="stylesheet">
+<!-- Full calendar print CSS -->
+<link href="themes/datas/assets/calendar-master/vendors/fullcalendar/fullcalendar.print.css" rel="stylesheet" media="print">
+<!-- Calendar CSS -->
+<link rel="stylesheet" type="text/css" href="themes/datas/css/calendar.css">
+<!-- Theme  CSS -->
+<link rel="stylesheet" type="text/css" href="themes/datas/min/csk.min.css">
+<!-- MediaQuery CSS -->
+<link rel="stylesheet" type="text/css" href="themes/datas/css/media-query.css">
+<!-- row -->
+<div class="row">
+    <div class="col-md-12 table-responsive">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Basic Calendar</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="clearfix">
+                        <div class="calendar1">
+                            <div class="col-md-3 add-event-calendar">
+                                <div id='external-events'>
+                                    <div class="text-center">
+                                        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                                            <i class="fa fa-plus"></i> Add Event
+                                        </button>
+                                    </div>
+                                    <hr>
+                                    <p class="disabled">Drag and drop your event or click in the calendar</p>
+                                    <div class='fc-event label label-success'>Purchae Contract</div>
+                                    <div class='fc-event label label-warning'>Application</div>
+                                    <div class='fc-event label label-danger'>Submitted</div>
+                                    <div class='fc-event label label-info'>Initial Disclosures</div>
+                                    <div class='fc-event label label-primary'>Approved</div>
+                                    <div class='fc-event label label-default'>Locked</div>
+                                </div>
+                                <div class="remove">
+                                    <input type="checkbox"  class="fa fa-circle" /> <small>Remove after Drop</small>
+                                </div>
+                            </div>
+                            <div class="hidden-md hidden-lg">
+                                <hr>
+                            </div>
+                            <div class="col-md-9 calendar-view">
+                                <div id='calendar'></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #row -->
+<!-- Modal  -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="text" name="event-input" id="event-id" placeholder="Event Name" required="required">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="dropdown pull-right">
+                                <div class="input-group">
+                                    <input type="text" Class="form-control dropdown-input">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-select">
+                                            <li><a href="#" class="btn btn-danger">Important</a></li>
+                                            <li><a href="#" class="btn btn-success">Client Meeiting </a></li>
+                                            <li><a href="#" class="btn btn-warning">Completed</a></li>
+                                            <li><a href="#" class="btn btn-info">Alarm</a></li>
+                                            <li><a href="#" class="btn btn-primary">Something else here</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="send-event" class="btn btn-success" data-dismiss="modal">Add Event</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- #Modal -->
+<!-- Moment min JS -->
+<script src="themes/datas/assets/calendar-master/vendors/fullcalendar/lib/moment.min.js"></script>
+<!--Jquery-ui.custom.min JS  -->
+<script src="themes/datas/assets/calendar-master/vendors/fullcalendar/lib/jquery-ui.custom.min.js"></script>
+<!-- Fullcalendar min JS -->
+<script src="themes/datas/assets/calendar-master/vendors/fullcalendar/fullcalendar.min.js"></script>
+<!-- App JS -->
+<script type="text/javascript" src="themes/datas/js/app.js"></script>
+<script>
+    $(document).ready(function () {
+        /* initialize the external events
+         -----------------------------------------------------------------*/
+        $('#external-events .fc-event').each(function () {
+            // store data so the calendar knows to render an event upon drop
+            $(this).data('event', {
+                title: $.trim($(this).text()), // use the element's text as the event title
+                stick: false, // maintain when user navigates (see docs on the renderEvent method),
+                editable: true,
+                className: 'captain'
+            });
+            // make the event draggable using jQuery UI
+            $(this).draggable({
+                zIndex: 999,
+                revert: true, // will cause the event to go back to its
+                revertDuration: 0 //  original position after the drag
+            });
+        });
+        /* initialize the calendar
+         -----------------------------------------------------------------*/
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev',
+                center: 'title, month,agendaWeek',
+                right: 'next',
+                default: false
+            },
+            prev: 'fa fa-arrow',
+            next: 'right-single-arrow',
+            // defaultView: '',
+            editable: true,
+            droppable: true, // this allows things to be dropped onto the calendar
+            drop: function () {
+                $(this).remove();
+            },
+            events: [{
+                    title: 'All Day Event',
+                    start: '2016-08-01'
+                }, {
+                    title: 'Long Event',
+                    start: '2016-08-04',
+                    end: '2016-08-07'
+                }, {
+                    id: 999,
+                    title: 'Repeating Event',
+                    start: '2016-08-09T16:00:00'
+                }, {
+                    id: 999,
+                    title: 'Repeating Event',
+                    start: '2016-08-16T16:00:00'
+                }, {
+                    title: '41`Conference Meeting',
+                    start: '2016-08-11',
+                    end: '2016-08-13'
+                }, {
+                    title: 'Birthday Party',
+                    start: '2016-08-13T07:00:00'
+                }, {
+                    title: 'Click for Google',
+                    url: 'http://zeasts.com/',
+                    start: '2016-08-28'
+                }]
+        });
+        // Calendar 2
+        $('#calendar2').fullCalendar({
+            header: {
+                left: 'prev',
+                center: 'title, month,agendaWeek',
+                right: 'next',
+                default: false
+            },
+            prev: 'fa fa-arrow',
+            next: 'right-single-arrow',
+            // defaultView: '',
+            editable: true,
+            droppable: true, // this allows things to be dropped onto the calendar
+            drop: function () {
+                $(this).remove();
+            }
+        });
+    });
+    $(document).on("click", ".fc-event-container .fc-event", function () {
+        $(this).toggleClass('view');
+    });
+    // Getting the live date and month for the Calendar 2
+    $(window).load(function () {
+        var d = new Date();
+        var day = d.getDate();
+        var month = new Array();
+        month[0] = "January";
+        month[1] = "February";
+        month[2] = "March";
+        month[3] = "April";
+        month[4] = "May";
+        month[5] = "June";
+        month[6] = "July";
+        month[7] = "August";
+        month[8] = "September";
+        month[9] = "October";
+        month[10] = "November";
+        month[11] = "December";
+        var monthn = month[d.getMonth()];
+        var year = d.getFullYear()
+        var d = new Date();
+        var weekday = new Array(7);
+        weekday[0] = "Sunday";
+        weekday[1] = "Monday";
+        weekday[2] = "Tuesday";
+        weekday[3] = "Wednesday";
+        weekday[4] = "Thursday";
+        weekday[5] = "Friday";
+        weekday[6] = "Saturday";
+        var week = weekday[d.getDay()];
+        $(".calender .date").append(day + '<small> of&nbsp;</small> ');
+        $(".calender .month").append(monthn);
+        $(".calender .day").append(week);
+    })
+    // Adding Events to the calendar 1
+    $(window).load(function () {
+        $(document).ready(function () {
+            $('#send-event').click(function () {
+                var value = $('#event-id').val();
+                $("#external-events").append('<div class="fc-event label ui-draggable ui-draggable-handle" >' + value + '</div>');
+                $("#event-id").val("");
+            })
+        })
+    })
+</script>

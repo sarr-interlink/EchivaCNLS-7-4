@@ -1,0 +1,233 @@
+<?php 
+$this->headLink()
+        ->prependStylesheet($this->basePath('themes/datas/css/tables.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/bootstrap-table-develop/src/bootstrap-table.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/media/css/dataTables.bootstrap.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/css/buttons.dataTables.min.css'))
+        ->prependStylesheet($this->basePath('themes/datas/css/csk.css'))
+?>
+<?php
+$this->inlineScript()
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/dataTables.bootstrap.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/dataTables.buttons.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.print.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.html5.min.js'))
+        ->prependFile($this->basePath('jszip.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/bootstrap-table-develop/dist/bootstrap-table.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/jquery.dataTables.js'));
+?>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">Details</h4>
+</div>
+<div class="modal-body">
+    <div class="table-responsive">
+        <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="tabaffiche">
+        </table>
+    </div>
+    
+</div>
+<div class="modal-footer">
+</div>
+<script>
+    //$(document).ready(function() {
+    var Nume = <?php echo $Nume; ?>;
+    console.log(Nume);
+    if (Nume == 1)
+    {
+        var data = <?php echo $fileactive; ?>;
+        $('#tabaffiche').DataTable({
+            data: data,
+            columns: [
+                {data: 'Ref', title: '<b>N° Dossier </b>'},
+                {data: 'RensAge_', title: '<b>Age </b>'},
+                {data: 'RensSexe', title: '<b>Sexe </b>'},
+                {data: 'Visit', title: '<b>Date Derniere visite </b>'},
+            ],
+        });
+    }
+    else
+    if (Nume == 2)
+    {
+        var data = <?php echo $perdudv; ?>;
+        $('#perdudv').DataTable({
+            data: data,
+            columns: [
+                {data: 'Ref', title: '<b>N° Dossier </b>'},
+                {data: 'RensAge_', title: '<b>Age </b>'},
+                {data: 'RensSexe', title: '<b>Sexe </b>'},
+                //{ data: 'Visit',title:'<b>Date Derniere visite </b>' },
+            ],
+        });
+    }
+    else
+    if (Nume == 3)
+    {
+        var data = <?php echo $dcd; ?>;
+        $('#dcd').DataTable({
+            data: data,
+            columns: [
+                {data: 'Ref', title: '<b>N° Dossier </b>'},
+                {data: 'RensAge_', title: '<b>Age </b>'},
+                {data: 'RensSexe', title: '<b>Sexe </b>'},
+                {data: 'RensDeceDat_', title: '<b>Date de Decès </b>'},
+            ],
+        });
+    }
+    else
+    if (Nume == 4)
+    {
+        var data = <?php echo $Nouveaupat; ?>;
+        $('#Nouveaupat').DataTable({
+            data: data,
+            columns: [
+                {data: 'Ref', title: '<b>N° Dossier </b>'},
+                {data: 'RensAge_', title: '<b>Age </b>'},
+                {data: 'RensSexe', title: '<b>Sexe </b>'},
+                {data: 'OuvrDat_', title: "<b>Date d'inscription </b>"},
+                {data: 'RensMatr', title: "<b>Situation matrimoniale </b>"},
+                {data: 'RensProv', title: "<b>Locatite de provenance </b>"},
+                {data: 'MediCsi_', title: "<b>Source d'orientation </b>"},
+                {data: 'RensChrg', title: "<b>Prise en charge </b>"},
+            ],
+        });
+    }
+    else
+    if (Nume == 5)
+    {
+        var data = <?php echo $medicons; ?>;
+           console.log(<?php echo $medicons; ?>);
+        $('#tabaffiche').DataTable({
+            data: data,
+            dom: 'Blfrtip',
+            "buttons": [
+                {
+                    extend: 'copyHtml5',
+                    text: '<span class="glyphicon glyphicon-copy"></span> Copier ',
+                    className: 'btn btn-info btn-outline btn-rounded',
+                    key: {
+                        key: 'c',
+                        altKey: true
+                    }
+                },
+		{
+                    extend: 'csvHtml5',
+                    text: '<span class="glyphicon glyphicon-export"></span> Excel ',
+                    className: 'btn btn-success btn-outline btn-rounded',
+                    key: {
+                        key: 'c',
+                        altKey: true
+                    },
+                    customize: function (csv) {
+                        return "\t\tAMNIR ECHIVA\n\t\tConsultations Médicales\n\n"+  csv;
+                    }
+                },
+                {
+                    extend: 'excel',
+                    text: '<span class="glyphicon glyphicon-export"></span> Excel ',
+                    className: 'btn btn-success btn-outline btn-rounded',
+                    key: {
+                        key: 'x',
+                        altKey: true
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<span class="glyphicon glyphicon-print"></span> Imprimer ',
+                    message: 'Amnir Echiva',
+                    className: 'btn btn-danger btn-outline btn-rounded',
+                    key: {
+                        key: 'p',
+                        altKey: true
+                    }
+                },
+            ],
+            columns: [
+                {data: 'Ref_', title: '<b>N° Dossier </b>'},
+                {data: 'RensAge_', title: '<b>Age </b>'},
+                {data: 'RensSexe', title: '<b>Sexe </b>'},
+                {data: 'OuvrDat_', title: "<b>Date d'inscription </b>"},
+                {data: 'Nbrcons', title: "<b>Nombre de consultation </b>"},
+                {data: 'derncons', title: "<b>Date Dernière Consultation  </b>"},
+                {data: 'Arv_Desi', title: "<b>Protocole ARV en cours </b>"},
+                {data: 'MediSeroTyp_', title: "<b>Type de sérologie </b>"},
+                /* { data: 'RensChrg',title:"<b>Prise en charge </b>" },*/
+                {data: 'RensTel_', title: "<b>Telephone </b>"},
+                {data: 'Dat_initImc_', title: "<b>Date Imc Initial</b>"},
+                {data: 'initImc_', title: "<b>Imc initial</b>"},
+                {data: 'Dat_dernImc_', title: "<b>Date Dernier Imc </b>"},
+                {data: 'dernImc_', title: "<b>Dernier Imc </b>"},
+                {data: 'Dat_initConc', title: "<b>Date Stade OMS Initial</b>"},
+                {data: 'initConc', title: "<b>Stade OMS initial</b>"},
+                {data: 'Dat_dernConc', title: "<b>Date Dernier Stade OMS </b>"},
+                {data: 'dernConc', title: "<b>Dernier Stade OMS </b>"},
+            ],
+        });
+    }
+    else
+    if (Nume == 6)
+    {
+        var data = <?php echo $inclusionarv; ?>;
+           console.log(<?php echo $inclusionarv; ?>);
+        $('#tabaffiche').DataTable({
+            data: data,
+            dom: 'Blfrtip',
+            "buttons": [
+                {
+                    extend: 'copyHtml5',
+                    text: '<span class="glyphicon glyphicon-copy"></span> Copier ',
+                    className: 'btn btn-info btn-outline btn-rounded',
+                    key: {
+                        key: 'c',
+                        altKey: true
+                    }
+                },
+		{
+                    extend: 'csvHtml5',
+                    text: '<span class="glyphicon glyphicon-export"></span> Excel ',
+                    className: 'btn btn-success btn-outline btn-rounded',
+                    key: {
+                        key: 'c',
+                        altKey: true
+                    },
+                    customize: function (csv) {
+                        return "\t\tAMNIR ECHIVA\n\t\tConsultations Médicales\n\n"+  csv;
+                    }
+                },
+                {
+                    extend: 'excel',
+                    text: '<span class="glyphicon glyphicon-export"></span> Excel ',
+                    className: 'btn btn-success btn-outline btn-rounded',
+                    key: {
+                        key: 'x',
+                        altKey: true
+                    }
+                },
+                {
+                    extend: 'print',
+                    text: '<span class="glyphicon glyphicon-print"></span> Imprimer ',
+                    message: 'Amnir Echiva',
+                    className: 'btn btn-danger btn-outline btn-rounded',
+                    key: {
+                        key: 'p',
+                        altKey: true
+                    }
+                },
+            ],
+            columns: [
+                {data: 'Ref_', title: '<b>N° Dossier </b>'},
+                {data: 'RensAge_', title: '<b>Age </b>'},
+                {data: 'RensSexe', title: '<b>Sexe </b>'},
+                {data: 'OuvrDat_', title: "<b>Date d'inscription </b>"},
+                {data: 'Arv_Desi', title: "<b>Protocole ARV en cours </b>"},
+                {data: 'Dat_initarvprsc', title: "<b>Debut prescription ARV </b>"},
+                {data: 'MediSeroTyp_', title: "<b>Type de sérologie </b>"},
+                {data: 'RensTel_', title: "<b>Telephone </b>"},
+                {data: 'Fileact', title: "<b>File Active </b>"},
+            ],
+        });
+    }
+    //});
+</script>

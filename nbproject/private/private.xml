@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/src/Parametres/Model/CentreTable.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Accueil/src/Accueil/Model/CentreTable.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/ZfcUser/src/ZfcUser/Controller/UserController.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Analyse/view/analyse/analyse/medicons.phtml</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Application/view/layout/layout.phtml</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/src/Parametres/Model/ListeTable.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/src/Parametres/Model/UserRole.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Analyse/src/Analyse/Controller/AnalyseController.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/src/Parametres/Model/Conf.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/view/parametres/parametres/editcentre.phtml</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Analyse/src/Analyse/Model/EntrTable.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Analyse/Module.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/ZfcBase/src/ZfcBase/Mapper/AbstractDbMapper.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/view/parametres/parametres/deletecentre.phtml</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Accueil/src/Accueil/Controller/AccueilController.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/ZfcUser/src/ZfcUser/Service/User.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/moduleRC/ZfcUser/src/ZfcUser/Mapper/User.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/ZfcUser/Module.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/src/Parametres/Form/CentreForm.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/ZfcUser/src/ZfcUser/Factory/Mapper/User.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/src/Parametres/Controller/ParametresController.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/src/Parametres/Form/ProfilForm.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Analyse/view/analyse/analyse/ptme.phtml</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Dossiers/src/Dossiers/Controller/DossiersController.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/src/Parametres/Model/Liste.php</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/view/parametres/parametres/index.phtml</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/view/parametres/parametres/addcentre.phtml</file>
+            <file>file:/C:/wamp64/www/Echiva/EchivaLASTVERSION/module/Parametres/src/Parametres/Model/Centre.php</file>
+        </group>
+    </open-files>
+</project-private>

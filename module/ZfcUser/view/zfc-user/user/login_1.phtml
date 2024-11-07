@@ -1,0 +1,97 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php
+        echo $this->headTitle('Amnir Echiva')->setSeparator(' - ')->setAutoEscape(false);
+
+        echo $this->headMeta()
+                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge');
+        ?>
+        <!-- Icon -->
+        <link rel="icon" href="themes/datas/images/icon.ico" />
+        <?php
+        echo $this->headLink()
+                ->prependStylesheet($this->basePath('themes/datas/css/media-query.css'))
+                ->prependStylesheet($this->basePath('themes/datas/css/lite-csk.css'))
+                ->prependStylesheet($this->basePath('themes/datas/css/csk.css'))
+                ->prependStylesheet($this->basePath('themes/datas/assets/animate.css-master/animate.min.css'))
+                ->prependStylesheet($this->basePath('themes/datas/bootstrap/css/bootstrap.min.css'))
+        ?>
+
+        <style>
+            td.highlight {
+                background-color: #FFCC66;
+            }
+        </style>
+        <?php
+        echo $this->inlineScript()
+                ->prependFile($this->basePath('themes/datas/js/app.js'))
+                ->prependFile($this->basePath('themes/datas/assets/jQuery-slimScroll-1.3.8/jquery.slimscroll.js'))
+                ->prependFile($this->basePath('themes/datas/assets/metisMenu-master/dist/metisMenu.min.js'))
+                ->prependFile($this->basePath('themes/datas/bootstrap/js/bootstrap.min.js'))
+                ->prependFile($this->basePath('themes/datas/assets/jquery-1.12.4/jquery-1.12.4.js'));
+        ?>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    <body>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-fixed-top notification navbar-default">
+            <div class="container-fluid">
+                <img src="..//themes/datas/images/interlink.png" style="width:90px" alt="Interlink" >
+            </div>
+            <!-- # container-fluid -->
+        </nav>
+        <!-- Main Body content starts here -->
+        <br />
+
+        <?php
+        $form = $this->loginForm;
+        $form->prepare();
+        $form->setAttribute('action', $this->url('zfcuser/login'));
+        $form->setAttribute('method', 'post');
+        $form->setAttribute('autocomplete', 'off');
+        ?>
+        <!--Container Starts -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-push-4 col-xs-12 sign-box">
+                    <div class="panel panel-default">
+                        <div class="panel-heading text-center">
+                            <img src="..//themes/datas/images/interlink.png" alt="Interlink" ><br /><br />
+                            <h3 class="nm np">
+                                <?php echo $this->translate('Authentification'); ?>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <br>
+                            <?php
+                            echo $this->partial('_form.phtml', ['form' => $form]);
+                            ?>
+                            <hr>
+                            <?php if ($this->enableRegistration) : ?>
+                                <div class="text-center">
+                                    <h4>
+                                        <br>
+                                        <?php echo $this->translate('© 2017 By <a href="www.interlink.mr" >Interlink</a>'); ?> 
+                                    </h4>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #Container Ends -->
+        <?php echo $this->inlineScript() ?>
+    </body>
+</html>

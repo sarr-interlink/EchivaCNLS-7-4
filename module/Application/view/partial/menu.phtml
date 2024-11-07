@@ -1,0 +1,60 @@
+<ul class="metismenu ripple" id="menu">
+    <?php 
+    foreach ($this->container as $page) {
+        $hasChildren = $page->hasPages();
+        $active = $page->isActive(true);
+        if (!$hasChildren) {
+            if ($this->navigation('navigation')->accept($page)) {
+                ?>
+                <li class="<?php echo ($active ? 'active' : ''); ?>" >
+                    <a href="<?php echo $page->getHref(); ?>" title="<?php echo $page->getLabel(); ?>">
+                        <span class="sidebar-nav-item-icon <?php echo $page->get('icon'); ?> fa-lg"></span>
+                        <span class="sidebar-nav-item aText"><?php echo $page->getLabel(); ?></span>
+                    </a>
+                </li>
+                <?php
+            }
+        } else {
+            $sub = 0;
+            $temppages = $page->getPages();
+            foreach ($temppages as $tempchild) {
+                if ($this->navigation('navigation')->accept($tempchild)) {
+                    $sub = $sub + 1;
+                }
+            }
+            if ($sub > 1) {
+                ?>
+                <li class="dropdown <?php echo ($active ? 'active' : ''); ?>">
+                    <a href="<?php echo $page->getHref(); ?>" class="dropdown-toggle" data-toggle="dropdown"><?php echo $page->getLabel(); ?> <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <?php
+                        foreach ($page->getPages() as $child) {
+                            $activechild = $child->isActive(true);
+                            if ($this->navigation('navigation')->accept($child)) {
+                                ?>
+                                <li class="<?php echo ($activechild ? 'active' : ''); ?>">
+                                    <a href="<?php echo $child->getHref(); ?>">
+                                        <?php echo $child->getLabel(); ?>
+                                    </a>
+                                </li>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </ul>
+                </li>
+                <?php
+            } else {
+                foreach ($page->getPages() as $child) {
+                    $active = $child->isActive(true);
+                    if ($this->navigation('navigation')->accept($child)) {
+                        ?>
+                        <li class="<?php echo ($active ? 'active' : ''); ?>" ><a href="<?php echo $child->getHref(); ?>"><?php echo $child->getLabel(); ?></a></li>
+                        <?php
+                    }
+                }
+            }
+        }
+    }
+    ?>
+</ul>

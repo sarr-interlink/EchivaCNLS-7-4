@@ -1,0 +1,31 @@
+{
+    "name": "mohit-singh/zf2auth-acl",
+    "description": "This is ACL module plug with zfcuser module this is heighly configurable abd provide different services at controller, view and module level.",
+    "type": "library",
+    "keywords": [
+        "zf2",
+        "Auth",
+        "ACL",
+        "ZF2 Auth",
+        "zfcuser",
+        "zf-commons",
+        "ZF2 ACL",
+        "ZF2 Auth Acl"
+    ],
+    "homepage": "https://github.com/Mohit-Singh/ZF2AuthAcl",
+    "authors": [
+        {
+            "name": "Mohit K Singh",
+            "email": "mohit.singh2090@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3",
+        "zf-commons/zfc-user": "1.x-dev"
+    },
+    "autoload": {
+        "classmap": [
+            "./Module.php"
+        ]
+    }
+}

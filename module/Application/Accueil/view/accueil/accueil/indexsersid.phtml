@@ -1,0 +1,75 @@
+<?php
+$title = 'Dossiers';
+$this->headTitle($title);
+$this->headLink()
+        ->prependStylesheet($this->basePath('themes/datas/css/tables.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/bootstrap-table-develop/src/bootstrap-table.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/media/css/dataTables.bootstrap.css'))
+?>
+
+<!-- Page Level JS -->
+<?php
+$this->inlineScript()
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/dataTables.bootstrap.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/dataTables.buttons.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.print.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.html5.min.js'))
+        ->prependFile($this->basePath('jszip.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/bootstrap-table-develop/dist/bootstrap-table.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/jquery.dataTables.js'))
+        ->appendFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/dataTables.bootstrap.js'));
+?>
+<div class="table-responsive">
+    <?php echo $this->dataTable('servers_datatable')->renderHtml(); ?>
+    <!-- /.table-responsive -->
+</div>
+<!-- /.panel -->
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function () {
+        $('#servers').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                dataType: 'json',
+                url: '<?php echo $this->url('accueil', array('action' => 'add')); ?>',
+                dataSrc: function (json) {
+                    return(json);
+                },
+                success: function (json) {
+                    console.log(json);
+                },
+            },
+            "responsive": true,
+             "columns": [
+                {data: "Nume"},
+                {data: "Modi"},
+            ],
+            "language": {
+                "decimal": "",
+                "emptyTable": "aucune donnée disponible",
+                "info": "Affichage de _START_ à _END_ de _TOTAL_ dossiers",
+                "infoEmpty": "Affichage 0 à 0 de 0 dossiers",
+                "infoFiltered": "(Filtré de _MAX_ dossiers totales)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Afficher _MENU_ dossiers",
+                "loadingRecords": "Chargement...",
+                "processing": "En traitement...",
+                "search": "Chercher",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+                "aria": {
+                    "sortAscending": ": Activer pour trier la colonne en ordre croissant",
+                    "sortDescending": ": Activer pour trier la colonne en descendant"
+                }
+            }
+        });
+    });
+</script>

@@ -1,0 +1,29 @@
+<?php
+$title = 'Supprimez Destination';
+$this->headTitle($title);
+$url = $this->url('parametres', array(
+    'action' => 'deleteitemdest',
+    'Nume' => $this->Nume,
+        ));
+?>
+
+<form action="<?php echo $url; ?>" method="post">
+    <div class="modal-header">
+        <h3 class="panel-title">
+            <?php echo $this->escapeHtml($title); ?>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h3>
+    </div>
+    <div class="modal-body">
+        <p>Etes-vous sûr que vous voulez supprimer</p>
+        <input type="hidden" name="Nume" value="<?php echo  $list->Nume; ?>" />
+    </div>
+    <div class="modal-footer">
+        <button type="submit" name="del" value="Non"  class="btn btn-default">Non</button>
+        <span>
+            <button type="submit" name="del" value="Oui"  class="btn btn-danger">Oui</button>
+        </span>
+    </div>
+</form>        

@@ -1,0 +1,71 @@
+<?php
+$title = 'Modifier Communaute';
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('communaute', array('action' => 'edit', 'Nume' => $this->Nume,)));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+$this->headLink()
+        ->prependStylesheet($this->basePath('bootstrap-select.min.css'));
+$this->inlineScript()
+        ->appendFile($this->basePath('bootstrap-select.min.js'))
+        ->appendFile($this->basePath('defaults-fr_FR.js'));
+?>
+
+<?php echo $this->form()->openTag($form); ?>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <?php echo $this->formHidden($form->get('Nume')); ?>
+        <div class="modal-header">
+            <h4 class="modal-title"><?php echo $this->escapeHtml($title); ?>
+                <a href="<?php echo $this->url('communaute'); ?>" class="btn btn-warning btn-outline btn-rounded pull-right">Fermer</a>
+            </h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">
+                            <?php echo $this->formLabel($form->get('Dat_')); ?>
+                        </label>
+                        <div class="col-sm-9">
+                            <?php
+                            echo $this->formInput($form->get('Dat_'));
+                            echo $this->formElementErrors($form->get('Dat_'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">
+                            <?php echo $this->formLabel($form->get('Acti')); ?>
+                        </label>
+                        <div class="col-sm-9">
+                            <?php
+                            echo $this->formSelect($form->get('Acti'));
+                            echo $this->formElementErrors($form->get('Acti'));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">
+                            <?php echo $this->formLabel($form->get('Nota')); ?>
+                        </label>
+                        <div class="col-sm-9">
+                            <?php
+                            echo $this->formInput($form->get('Nota'));
+                            echo $this->formElementErrors($form->get('Nota'));
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" name="submit" class="btn btn-primary">Valider</button>
+            <span>
+                <button type="button" name="rest" value="Annuler" class="btn btn-default" data-dismiss="modal" aria-label="Close">Annuler</button>
+            </span>
+        </div>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>

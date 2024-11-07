@@ -1,0 +1,75 @@
+<?php
+$title = 'Reporting';
+$this->headTitle($title);
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary-border-top">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title pull-left" style="padding-top: 7.5px;">
+                    <?php echo $this->escapeHtml($title); ?>
+                </h4>
+                <div class="clearfix"></div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <!-- /.table-responsive -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'depistage')); ?>">
+                            <span  aria-hidden="true"></span> ACTIVITES DE DEPISTAGE
+                        </a>
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'profilpatient')); ?>">
+                            <span  aria-hidden="true"></span> PROFIL DES PATIENTS ENREGISTRES 
+                        </a>
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'suivipatient')); ?>">
+                            <span aria-hidden="true"></span> Suivi des patients
+                        </a>
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'nouveaupatient')); ?>">
+                            <span aria-hidden="true"></span> Nouveaux patients
+                        </a>
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'medicons')); ?>">
+                            <span aria-hidden="true"></span>  Consultations médicales
+                        </a>
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'incarv')); ?>">
+                            <span aria-hidden="true"></span> Inclusions sous ARV
+                        </a>
+                       <!-- <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'modtrait')); ?>">
+                            <span aria-hidden="true"></span> Modification de traitement
+                        </a> -->
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'pharma')); ?>">
+                            <span aria-hidden="true"></span> Pharmacie
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'ptme')); ?>">
+                            <span aria-hidden="true"></span> PTME
+                        </a>
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'infectopp')); ?>">
+                            <span aria-hidden="true"></span> INFECTIONS OPPORTUNISTES
+                        </a>
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'hospdj')); ?>">
+                            <span aria-hidden="true"></span> HOSPITALISATIONS DE JOUR
+                        </a>
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'suivibio')); ?>">
+                            <span aria-hidden="true"></span> SUIVI BIOLOGIQUE
+                        </a>
+                        <!--<a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'actpsysocinutri')); ?>">
+                            <span aria-hidden="true"></span> ACTIVITES PSYCHOSOCIALES ET NUTRITIONNELLES
+                        </a> -->
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'suivinutri')); ?>">
+                            <span aria-hidden="true"></span> SUIVI NUTRITIONNEL
+                        </a>
+                        <!-- <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'rappnutri')); ?>">
+                            <span aria-hidden="true"></span>Rapport mensuel Nutrition
+                        </a> -->
+                        <a title="Nouveau" class="btn btn-primary btn-outline btn-rounded" href="<?php echo $this->url('analyse', array('action' => 'rappcotx')); ?>">
+                            <span aria-hidden="true"></span>Rapport Cotrimoxazole
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+</div>

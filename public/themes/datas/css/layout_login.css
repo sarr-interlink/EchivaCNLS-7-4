@@ -1,0 +1,111 @@
+html {
+  height: 100%;
+}
+
+.wrapper{
+   margin: 0px auto;
+   width: 1024px;
+   background-color: #123A8D;
+}
+.header{
+   float: left;
+   width: 100%;
+   height: 196px;
+   background-color: #F0F0F0;
+   background: url(images/hreader.png) no-repeat left top ;
+   border-bottom: 0px solid #E5A158 ;
+}
+.content{
+   float: left;
+   width: 100%;
+   min-height: 869px;
+   background-color: #F9FAFC;
+       
+        background: url(images/content.png) no-repeat left top ;
+}
+.footer{
+   float: left;
+   width: 100%;
+   height: 199px;
+   background-color: #fff;
+   border: 0px solid #F0F0F0 ;
+   background: url(images/footer.png) no-repeat left top ;
+   
+}
+body {
+   width: 1000px ;
+   margin: auto;
+   margin-bottom: 3px;
+   background-color: #123A8D;
+}
+
+.content .jumbotron_lg {
+	position: relative; /* N�cessaire pour Safari */
+	margin: auto; /* Alignements horizontal dans les navigateurs respectant les standards */
+	text-align: left;
+	width: 400px;
+//	height: 200px;
+//	background-color: #F9FAFC;
+}
+
+
+
+/*============= BOXES =============*/
+div.box_upper_part{
+	background-image:url('img/box_up-bg.png');
+	height:29px;
+	width:100%;
+}
+div.box_upper_part3{
+	background-image:url('img/box_up-bg.png');
+	height:29px;
+	border-left:solid 1px #5f626a;
+	border-right:solid 1px #5f626a;
+}
+div.box_middle_part{
+	background-color:#f6f5f4;
+	border-left:solid 1px #5f626a;
+	border-right:solid 1px #5f626a;
+}
+div.box_lower_part{
+	background-image:url('img/box_low-bg.png');
+	height:22px;
+	margin-bottom:15px;
+}
+div.box_lower_part3{
+	/*background-image:url('css/img/box_low-bg.png');*/
+	height:22px;
+	margin-bottom:15px;
+	border-left:solid 1px #5f626a;
+	border-right:solid 1px #5f626a;
+	border-bottom:solid 1px #5f626a;
+	background-color:#f6f5f4;
+}
+div.box_single{
+	background-color:#f6f5f4;
+	border:solid 1px #5f626a;
+	margin-bottom:15px;
+}
+img.box_dot{
+	float:left;
+	position:relative;
+	top:4px;
+	left:4px;
+}
+/*###########################################*/
+.align-left{
+	float:left;
+}
+.align-right{
+	float:right;
+}
+span.box_header {
+position: relative;
+top: 5px;
+left: 11px;
+font-size: 1.2em;
+font-weight: bold;
+color: #123A8D;
+}
+
+

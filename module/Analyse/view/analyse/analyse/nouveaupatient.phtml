@@ -1,0 +1,509 @@
+<?php
+$title = 'Nouveaux patients';
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('analyse', array('action' => 'nouveaupatient')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+$this->headLink()
+        ->prependStylesheet($this->basePath('themes/datas/css/tables.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/bootstrap-table-develop/src/bootstrap-table.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/media/css/dataTables.bootstrap.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/css/buttons.dataTables.min.css'))
+        ->prependStylesheet($this->basePath('themes/datas/css/csk.css'))
+?>
+<?php
+$this->inlineScript()
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/dataTables.bootstrap.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/dataTables.buttons.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.print.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.html5.min.js'))
+        ->prependFile($this->basePath('jszip.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/bootstrap-table-develop/dist/bootstrap-table.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/jquery.dataTables.js'))
+        ->prependFile($this->basePath('themes/datas/js/highcharts-data.js'))
+        ->prependFile($this->basePath('themes/datas/assets/Highcharts-4.2.5/js/modules/data.js'))
+        ->prependFile($this->basePath('themes/datas/assets/Highcharts-4.2.5/js/modules/exporting.js'))
+        ->prependFile($this->basePath('themes/datas/assets/Highcharts-4.2.5/js/highcharts.js'));
+?>
+
+<?php
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('Nume'));
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary-border-top">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title pull-left" style="padding-top: 7.5px;">
+                    <?php echo $this->escapeHtml($title); ?>
+                </h4>
+                <div class="btn-group pull-right" style="margin-right: 15px;">
+                    <div class="form-group">
+                        <div class="col-sm-5">
+                            <?php
+                            echo $this->formInput($form->get('datedeb'));
+                            echo $this->formElementErrors($form->get('datedeb'));
+                            ?>
+                        </div>
+                        <div class="col-sm-5">
+                            <?php
+                            echo $this->formInput($form->get('datefin'));
+                            echo $this->formElementErrors($form->get('datefin'));
+                            ?>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="submit" name="submit" id="submit" class="btn btn-primary">Lancer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="nouvpatient" data-highcharts-chart="4">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="table-responsive">
+                            <table id="tabnouvpatient" class=" table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Repartition par sexe et par age</th>
+                                        <th>0 - 15 ans</th>
+                                        <th>16 - 49 ans</th>
+                                        <th>50 ans et plus</th>
+                                        <th>Total</th>
+                                        <th>Pourcentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($tabnouvpat as $tabnouvp) : ?>
+                                        <tr>
+                                            <td><?php echo $this->escapeHtml($tabnouvp['titre']); ?></td>
+                                            <td><?php echo $this->escapeHtml($tabnouvp[1]); ?></td>
+                                            <td><?php echo $this->escapeHtml($tabnouvp[2]); ?></td>
+                                            <td><?php echo $this->escapeHtml($tabnouvp[3]); ?></td>
+
+                                            <td><?php
+                                                if ($tabnouvp['titre'] == 'Total')
+                                                    echo '<a title="Voir detail"  data-toggle="modal" title="Détails" href="#details">'
+                                                    ."<span class='label label-primary'>".$this->escapeHtml($tabnouvp[4])."</span></a>";
+                                                else
+                                                    echo $this->escapeHtml($tabnouvp[4]);
+                                                ?></td>
+                                            <td><?php echo $this->escapeHtml($tabnouvp[5]); ?></td>
+                                        </tr> 
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                            <table id="tabnouvpatientV" class=" table table-striped table-bordered" style = "display :none">
+                                <thead>
+                                    <tr>
+                                        <th>Repartition par sexe et par age</th>
+                                        <th>0 - 15 ans</th>
+                                        <th>16 - 49 ans</th>
+                                        <th>50 ans et plus</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($tabnouvpat as $tabnouvp) : if ($tabnouvp['titre'] != "Pourcentage" && $tabnouvp['titre'] != "Total") { ?>
+                                            <tr>
+                                                <td><?php echo $this->escapeHtml($tabnouvp['titre']); ?></td>
+                                                <td><?php echo $this->escapeHtml($tabnouvp[1]); ?></td>
+                                                <td><?php echo $this->escapeHtml($tabnouvp[2]); ?></td>
+                                                <td><?php echo $this->escapeHtml($tabnouvp[3]); ?></td>
+                                            </tr> 
+                                        <?php } endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div> 
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="newpatmatri-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Répartition par statut matrimonial</th>
+                                        <th>Nombre</th>
+                                        <th>Pourcentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($tabnouvpatmatri as $k => $tabnouvpatmat) : ?>
+                                        <tr>
+                                            <td><?php echo $this->escapeHtml($k); ?></td>
+                                            <td><?php echo $this->escapeHtml($tabnouvpatmat['valeur']); ?></td>
+                                            <td><?php echo $this->escapeHtml($tabnouvpatmat['pourcentage']); ?></td>
+                                        </tr> 
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="srcori-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Source d'orientation</th>
+                                        <th>Nombre</th>
+                                        <th>Pourcentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($taborient as $k => $taboriente) : ?>
+                                        <tr>
+                                            <td><?php echo $this->escapeHtml($k); ?></td>
+                                            <td><?php echo $this->escapeHtml($taboriente['valeur']); ?></td>
+                                            <td><?php echo $this->escapeHtml($taboriente['pourcentage']); ?></td>
+                                        </tr> 
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="loca-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Localité de provenance</th>
+                                        <th>Nombre</th>
+                                        <th>Pourcentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($tabloca as $k => $tablocali) : ?>
+                                        <tr>
+                                            <td><?php echo $this->escapeHtml($k); ?></td>
+                                            <td><?php echo $this->escapeHtml($tablocali['Nombre']); ?></td>
+                                            <td><?php echo $this->escapeHtml($tablocali['Pourcentage']); ?></td>
+                                        </tr> 
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>
+<div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="details" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Nouveau patient - Détails</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="examples col-md-12">
+                        <div class="table-responsive">
+                            <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="tabaffiche">
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#tabnouvpatient').DataTable({
+            dom: 'Bfrtip',
+            "buttons": [
+                {
+                    extend: 'collection',
+                    text: 'Exporter la liste',
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            text: '<i class="fa fa-files-o"></i> Copier',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="fa fa fa-print"></i> Imprimer',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            className: 'btn btn-primary',
+                        }
+                    ],
+                    className: 'btn btn-primary',
+                }
+            ],
+            "ordering": false,
+            "searching": false,
+            "paging": false,
+            "info": false,
+            language: {
+                buttons: {
+                    copyTitle: 'Ajouté au presse-papiers',
+                    /*copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',*/
+                    copySuccess: {
+                        _: '%d lignes copiées',
+                        1: '1 ligne copiée'
+                    }
+                },
+                "emptyTable": "aucune donnée disponible",
+                "search": "Chercher:",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+            }
+        });
+        $('#newpatmatri-datatable').DataTable({
+            dom: 'Bfrtip',
+            "buttons": [
+                {
+                    extend: 'collection',
+                    text: 'Exporter la liste',
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            text: '<i class="fa fa-files-o"></i> Copier',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="fa fa fa-print"></i> Imprimer',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            className: 'btn btn-primary',
+                        }
+                    ],
+                    className: 'btn btn-primary',
+                }
+            ],
+            "ordering": false,
+            "searching": false,
+            "paging": false,
+            "info": false,
+            language: {
+                buttons: {
+                    copyTitle: 'Ajouté au presse-papiers',
+                    /*copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',*/
+                    copySuccess: {
+                        _: '%d lignes copiées',
+                        1: '1 ligne copiée'
+                    }
+                },
+                "emptyTable": "aucune donnée disponible",
+                "search": "Chercher:",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+            }
+        });
+        $('#srcori-datatable').DataTable({
+            dom: 'Bfrtip',
+            "buttons": [
+                {
+                    extend: 'collection',
+                    text: 'Exporter la liste',
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            text: '<i class="fa fa-files-o"></i> Copier',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="fa fa fa-print"></i> Imprimer',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            className: 'btn btn-primary',
+                        }
+                    ],
+                    className: 'btn btn-primary',
+                }
+            ],
+            "ordering": false,
+            "searching": false,
+            "paging": false,
+            "info": false,
+            language: {
+                buttons: {
+                    copyTitle: 'Ajouté au presse-papiers',
+                    /*copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',*/
+                    copySuccess: {
+                        _: '%d lignes copiées',
+                        1: '1 ligne copiée'
+                    }
+                },
+                "emptyTable": "aucune donnée disponible",
+                "search": "Chercher:",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+            }
+        });
+        $('#loca-datatable').DataTable({
+            dom: 'Bfrtip',
+            "buttons": [
+                {
+                    extend: 'collection',
+                    text: 'Exporter la liste',
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            text: '<i class="fa fa-files-o"></i> Copier',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="fa fa fa-print"></i> Imprimer',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            className: 'btn btn-primary',
+                        }
+                    ],
+                    className: 'btn btn-primary',
+                }
+            ],
+            "ordering": false,
+            "searching": false,
+            "paging": false,
+            "info": false,
+            language: {
+                buttons: {
+                    copyTitle: 'Ajouté au presse-papiers',
+                    /*copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',*/
+                    copySuccess: {
+                        _: '%d lignes copiées',
+                        1: '1 ligne copiée'
+                    }
+                },
+                "emptyTable": "aucune donnée disponible",
+                "search": "Chercher:",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+            }
+        });
+
+        $('.nouvpatient').highcharts({
+            data: {
+                table: document.getElementById('tabnouvpatientV')
+            },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        menuItems: [
+                            {
+                                text: 'Exporter le graphe au format PNG',
+                                onclick: function () {
+                                    this.exportChart({
+                                        type: 'image/png'
+                                    });
+                                }
+                            },
+                            {
+                                text: 'Exporter le graphe au format JPEG',
+                                onclick: function () {
+                                    this.exportChart({
+                                        type: 'image/jpeg'
+                                    });
+                                }
+                            },
+                            {
+                                text: 'Exporter le graphe au format PDF',
+                                onclick: function () {
+                                    this.exportChart({
+                                        type: 'application/pdf'
+                                    });
+                                }
+                            }
+                        ]
+
+                    }
+                }
+
+
+            },
+            chart: {
+                type: 'column'
+            }, credits: {
+                enabled: false
+            },
+            title: {
+                text: 'Répartition par âge et par sexe des nouveaux patients'
+            },
+            credits: {
+                enabled: false
+            },
+            yAxis: {
+                allowDecimals: false,
+                title: {
+                    text: ''
+                }
+            },
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.series.name + '</b><br/>' +
+                            this.point.y + ' ' + this.point.name.toLowerCase();
+                }
+            }
+        });
+
+
+var data = <?php echo $details; ?>;
+        $('#tabaffiche').DataTable({
+            data: data,
+            columns: [
+                {data: 'Ref', title: '<b>N° Dossier </b>'},
+                {data: 'RensAge_', title: '<b>Age </b>'},
+                {data: 'RensSexe', title: '<b>Sexe </b>'},
+                {data: 'OuvrDat_', title: "<b>Date d'inscription </b>"},
+                {data: 'RensMatr', title: "<b>Situation matrimoniale </b>"},
+                {data: 'RensProv', title: "<b>Locatite de provenance </b>"},
+                {data: 'MediCsi_', title: "<b>Source d'orientation </b>"},
+                {data: 'RensChrg', title: "<b>Prise en charge </b>"},
+            ],
+        });
+    });
+</script>

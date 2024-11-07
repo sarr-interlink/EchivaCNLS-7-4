@@ -1,0 +1,46 @@
+<?php
+$title = 'Ajouter Dosage';
+$this->headTitle($title);
+
+$this->headLink()
+        ->prependStylesheet($this->basePath('bootstrap-select.min.css'));
+$this->inlineScript()
+        ->appendFile($this->basePath('bootstrap-select.min.js'))
+        ->appendFile($this->basePath('defaults-fr_FR.js'));
+
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('parametres', array('action' => 'adddosa',)));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+echo $this->form()->openTag($form);
+?>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title col-sm-4"><?php echo $this->escapeHtml($title); ?></h4>
+            <a href="<?php echo $this->url('parametres'); ?>" class="btn btn-warning btn-outline btn-rounded pull-right">Fermer</a>
+        </div>
+        <div class="modal-body">
+            <?php echo $this->formHidden($form->get('Nume')); ?>
+            <div class="form-group">
+                <label class="control-label col-sm-4">
+                    <?php echo $this->formLabel($form->get('Desi')); ?>
+                </label>
+                <div class="col-sm-8">
+                    <?php
+                    echo $this->formInput($form->get('Desi'));
+                    echo $this->formElementErrors($form->get('Desi'));
+                    ?>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" name="submit" class="btn btn-primary">Valider</button>
+            <span>
+                <button type="reset" name="rest" value="Annuler" class="btn btn-default">Annuler</button>
+            </span>
+        </div>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>

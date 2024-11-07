@@ -1,0 +1,586 @@
+<?php
+$title = 'Suivi des patients';
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('analyse', array('action' => 'suivipatient')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+$this->headLink()
+        ->prependStylesheet($this->basePath('themes/datas/css/tables.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/bootstrap-table-develop/src/bootstrap-table.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/media/css/dataTables.bootstrap.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/css/buttons.dataTables.min.css'))
+        ->prependStylesheet($this->basePath('themes/datas/css/csk.css'))
+?>
+<?php
+$this->inlineScript()
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/dataTables.bootstrap.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/dataTables.buttons.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.print.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.html5.min.js'))
+        ->prependFile($this->basePath('jszip.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/bootstrap-table-develop/dist/bootstrap-table.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/jquery.dataTables.js'))
+        ->prependFile($this->basePath('themes/datas/js/highcharts-data.js'))
+        ->prependFile($this->basePath('themes/datas/assets/Highcharts-4.2.5/js/modules/exporting.js'))
+        ->prependFile($this->basePath('themes/datas/assets/Highcharts-4.2.5/js/highcharts.js'));
+?>
+
+<?php
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('Nume'));
+?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary-border-top">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title pull-left" style="padding-top: 7.5px;">
+                    <?php echo $this->escapeHtml($title); ?>
+                </h4>
+                <div class="btn-group pull-right">
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <?php
+                            echo $this->formInput($form->get('daterappmoi'));
+                            echo $this->formElementErrors($form->get('daterappmoi'));
+                            ?>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" name="submit" id="submit" class="btn btn-primary">Lancer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="suivi" data-highcharts-chart="3">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="table-responsive">
+                            <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="suividatatable">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($tabsuivi as $k => $tabsuiv) : ?>
+                                        <tr>
+                                            <td><?php echo $this->escapeHtml($k); ?></td>
+                                            <td>
+                                                <?php
+                                                if ($k == 'Nombre total de PDV')
+                                                    echo '<a title="Voir detail"  data-toggle="modal" title="Détails" href="#detailspdv">'
+                                                    . "<span class='label label-primary'>" . $this->escapeHtml($tabsuiv['valeur']) . "</span></a>";
+                                                else
+                                                if ($k == 'Nombre total de décès')
+                                                    echo '<a title="Voir detail"  data-toggle="modal" title="Détails" href="#detailsdcd">'
+                                                    . "<span class='label label-primary'>" . $this->escapeHtml($tabsuiv['valeur']) . "</span></a>";
+                                                else
+                                                if ($k == 'Nombre de décès ce mois')
+                                                    echo '<a title="Voir detail"  data-toggle="modal" title="Détails" href="#detailsdcdm">'
+                                                    . "<span class='label label-primary'>" . $this->escapeHtml($tabsuiv['valeur']) . "</span></a>";
+                                                else
+                                                if ($k == 'Nombre de PDV ce mois')
+                                                    echo '<a title="Voir detail"  data-toggle="modal" title="Détails" href="#detailspdvpm">'
+                                                    . "<span class='label label-primary'>" . $this->escapeHtml($tabsuiv['valeur']) . "</span></a>";
+                                                else
+                                                    echo $this->escapeHtml($tabsuiv['valeur']);
+                                                ?>
+                                            </td>
+                                        </tr> 
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php echo $this->form()->closeTag() ?>
+<div class="modal fade" id="detailspdv" tabindex="-1" role="dialog" aria-labelledby="details" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Patients perdu de vue - Détails</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="examples col-md-12">
+                        <div class="table-responsive">
+                            <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="tabaffiche">
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detailspdvpm" tabindex="-1" role="dialog" aria-labelledby="details" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Patients perdu de vue - Détails</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="examples col-md-12">
+                        <div class="table-responsive">
+                            <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="tabaffichepdvpm">
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="detailsdcd" tabindex="-1" role="dialog" aria-labelledby="details" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Patients décédés - Détails</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="examples col-md-12">
+                        <div class="table-responsive">
+                            <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="tabaffiche1">
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="detailsdcdm" tabindex="-1" role="dialog" aria-labelledby="details" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Patients décédés du moi- Détails</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="examples col-md-12">
+                        <div class="table-responsive">
+                            <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="tabaffiche5">
+                            </table>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#suividatatable').DataTable({
+        dom: 'Bfrtip',
+        "buttons": [
+            {
+                extend: 'collection',
+                text: 'Exporter la liste',
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: '<i class="fa fa-files-o"></i> Copier',
+                        className: 'btn btn-primary',
+                    },
+                    {
+                        extend: 'print',
+                        text: '<i class="fa fa fa-print"></i> Imprimer',
+                        className: 'btn btn-primary',
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fa fa-file-excel-o"></i> Excel',
+                        className: 'btn btn-primary',
+                    }
+                ],
+                className: 'btn btn-primary',
+            }
+        ],
+        "ordering": false,
+        "searching": false,
+        "paging": false,
+        "info": false,
+        language: {
+            buttons: {
+                copyTitle: 'Ajouté au presse-papiers',
+                /*copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',*/
+                copySuccess: {
+                    _: '%d lignes copiées',
+                    1: '1 ligne copiée'
+                }
+            },
+            "emptyTable": "aucune donnée disponible",
+            "search": "Chercher:",
+            "zeroRecords": "Aucun enregistrements correspondants trouvés",
+            "paginate": {
+                "first": "Premier",
+                "last": "Dernier",
+                "next": "Suivant",
+                "previous": "Précédent"
+            },
+        }
+    });
+    var tabsuivi = <?php echo json_encode($tabsuivi); ?>;
+    function extract(tabdepis, chaine) {
+        var str = chaine.split("#");
+        var result = Array();
+        for (var indice in tabdepis)
+        { 
+          if(indice ==='Nombre de PDV ce mois'){
+              result['Nombre de PDV ce mois'] = tabdepis[indice]['valeur'];
+          }
+          if(indice ==='Nombre enfants décédés ce mois (≤ 15 ans)'){
+              result['Nombre enfants décédés ce mois (≤ 15 ans)'] = tabdepis[indice]['valeur'];
+          }
+        }
+        return result;
+    }
+    $(function () {
+        var chaine = "Nombre total de PDV# Dont enfants (≤ 15 ans)";
+        var result = extract(tabsuivi, chaine);
+        $('.suivi').highcharts({
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Comparaison entre les patients perdus de vue '/*et les patients récupérés*/
+            },
+            credits: {
+                enabled: false
+            },
+            subtitle: {
+                //text: 'Click the columns to view versions. Source: <a href="http://netmarketshare.com">netmarketshare.com</a>.'
+            },
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: false,
+                        format: '{point.y:.0f}'
+                    }
+                }
+            },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        menuItems: [
+                            {
+                                text: 'Exporter le graphe au format PNG',
+                                onclick: function () {
+                                    this.exportChart({
+                                        type: 'image/png'
+                                    });
+                                }
+                            },
+                            {
+                                text: 'Exporter le graphe au format JPEG',
+                                onclick: function () {
+                                    this.exportChart({
+                                        type: 'image/jpeg'
+                                    });
+                                }
+                            },
+                            {
+                                text: 'Exporter le graphe au format PDF',
+                                onclick: function () {
+                                    this.exportChart({
+                                        type: 'application/pdf'
+                                    });
+                                }
+                            }
+                        ]
+
+                    }
+                }
+
+
+            },
+            tooltip: {
+                headerFormat: '<br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b><br/>'
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                    name: 'Brands',
+                    colorByPoint: true,
+                    data: [{
+                            name: 'Nombre de PDV ce mois',
+                            y: parseInt(result['Nombre de PDV ce mois']),
+                        }, {
+                            name: ' Dont enfants (≤ 15 ans)',
+                            y: parseInt(result['Nombre enfants PDV ce mois (≤ 15 ans)']),
+                        }
+                    ]
+                }]
+        });
+    });
+    var data = <?php echo $detailspdv; ?>;
+    $('#tabaffiche').DataTable({
+        data: data,
+        dom: 'Blfrtip',
+        "buttons": [
+            {
+                extend: 'copyHtml5',
+                text: '<span class="glyphicon glyphicon-copy"></span> Copier ',
+                className: 'btn btn-info btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                text: '<span class="glyphicon glyphicon-export"></span> Excel ',
+                className: 'btn btn-success btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                },
+                customize: function (csv) {
+                    return "\t\tAMNIR ECHIVA\n\t\tConsultations Médicales\n\n" + csv;
+                }
+            },
+            {
+                extend: 'excel',
+                text: '<span class="glyphicon glyphicon-export"></span> Excel ',
+                className: 'btn btn-success btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                },
+                customize: function (csv) {
+                    return "\t\tAMNIR ECHIVA\n\t\tConsultations Médicales\n\n" + csv;
+                }
+            },
+            {
+                extend: 'print',
+                text: '<span class="glyphicon glyphicon-print"></span> Imprimer ',
+                message: 'Amnir Echiva',
+                className: 'btn btn-danger btn-outline btn-rounded',
+                key: {
+                    key: 'p',
+                    altKey: true
+                }
+            },
+        ],
+        columns: [
+            {data: 'Ref', title: '<b>N° Dossier </b>'},
+            {data: 'RensAge_', title: '<b>Age </b>'},
+            {data: 'RensSexe', title: '<b>Sexe </b>'},
+                    //{ data: 'Visit',title:'<b>Date Derniere visite </b>' },
+        ],
+    });
+
+    var data2 = <?php echo $detailspdvpm; ?>;
+    $('#tabaffichepdvpm').DataTable({
+        data: data2,
+        dom: 'Blfrtip',
+        "buttons": [
+            {
+                extend: 'copyHtml5',
+                text: '<span class="glyphicon glyphicon-copy"></span> Copier ',
+                className: 'btn btn-info btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                text: '<span class="glyphicon glyphicon-export"></span> Csv ',
+                className: 'btn btn-success btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                },
+                customize: function (csv) {
+                    return "\t\tAMNIR ECHIVA\n\t\Patients perdus de vue\n\n" + csv;
+                }
+            },
+            {
+                extend: 'excel',
+                text: '<span class="glyphicon glyphicon-export"></span> Excel ',
+                className: 'btn btn-success btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                },
+                customize: function (csv) {
+                    return "\t\tAMNIR ECHIVA\n\t\tPatients perdus de vue\n\n" + csv;
+                }
+            },
+            {
+                extend: 'print',
+                text: '<span class="glyphicon glyphicon-print"></span> Imprimer ',
+                message: 'Amnir Echiva',
+                className: 'btn btn-danger btn-outline btn-rounded',
+                key: {
+                    key: 'p',
+                    altKey: true
+                }
+            },
+        ],
+        columns: [
+            {data: 'Ref', title: '<b>N° Dossier </b>'},
+            {data: 'RensAge_', title: '<b>Age </b>'},
+            {data: 'RensSexe', title: '<b>Sexe </b>'},
+            {data: 'Arv_Desi', title: '<b>Protocole ARV</b>'},
+            {data: 'Dernvisit', title: '<b>Date Derniere visite </b>'},
+        ],
+    });
+
+    var data1 = <?php echo $detailsdcd; ?>;
+    $('#tabaffiche1').DataTable({
+        data: data1,
+        dom: 'Blfrtip',
+        "buttons": [
+            {
+                extend: 'copyHtml5',
+                text: '<span class="glyphicon glyphicon-copy"></span> Copier ',
+                className: 'btn btn-info btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                text: '<span class="glyphicon glyphicon-export"></span> Csv ',
+                className: 'btn btn-success btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                },
+                customize: function (csv) {
+                    return "\t\tAMNIR ECHIVA\n\t\Patients décédés\n\n" + csv;
+                }
+            },
+            {
+                extend: 'excel',
+                text: '<span class="glyphicon glyphicon-export"></span> Excel ',
+                className: 'btn btn-success btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                },
+                customize: function (csv) {
+                    return "\t\tAMNIR ECHIVA\n\t\tPatients Patients décédés\n\n" + csv;
+                }
+            },
+            {
+                extend: 'print',
+                text: '<span class="glyphicon glyphicon-print"></span> Imprimer ',
+                message: 'Amnir Echiva',
+                className: 'btn btn-danger btn-outline btn-rounded',
+                key: {
+                    key: 'p',
+                    altKey: true
+                }
+            },
+        ],
+        columns: [
+            {data: 'Ref', title: '<b>N° Dossier </b>'},
+            {data: 'RensAge_', title: '<b>Age </b>'},
+            {data: 'RensSexe', title: '<b>Sexe </b>'},
+            {data: 'Arv_Desi', title: '<b>Protocole ARV</b>'},
+            {data: 'RensDeceDat_', title: '<b>Date de Decès </b>'},
+        ],
+    });
+    var data5 = <?php echo $detailsdcdm; ?>;
+    $('#tabaffiche5').DataTable({
+        data: data5,
+        dom: 'Blfrtip',
+        "buttons": [
+            {
+                extend: 'copyHtml5',
+                text: '<span class="glyphicon glyphicon-copy"></span> Copier ',
+                className: 'btn btn-info btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                text: '<span class="glyphicon glyphicon-export"></span> Csv ',
+                className: 'btn btn-success btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                },
+                customize: function (csv) {
+                    return "\t\tAMNIR ECHIVA\n\t\Patients décédés\n\n" + csv;
+                }
+            },
+            {
+                extend: 'excel',
+                text: '<span class="glyphicon glyphicon-export"></span> Excel ',
+                className: 'btn btn-success btn-outline btn-rounded',
+                key: {
+                    key: 'c',
+                    altKey: true
+                },
+                customize: function (csv) {
+                    return "\t\tAMNIR ECHIVA\n\t\tPatients Patients décédés\n\n" + csv;
+                }
+            },
+            {
+                extend: 'print',
+                text: '<span class="glyphicon glyphicon-print"></span> Imprimer ',
+                message: 'Amnir Echiva',
+                className: 'btn btn-danger btn-outline btn-rounded',
+                key: {
+                    key: 'p',
+                    altKey: true
+                }
+            },
+        ],
+        columns: [
+            {data: 'Ref', title: '<b>N° Dossier </b>'},
+            {data: 'RensAge_', title: '<b>Age </b>'},
+            {data: 'RensSexe', title: '<b>Sexe </b>'},
+            {data: 'Arv_Desi', title: '<b>Protocole ARV</b>'},
+            {data: 'RensDeceDat_', title: '<b>Date de Decès </b>'},
+        ],
+    });
+
+</script>

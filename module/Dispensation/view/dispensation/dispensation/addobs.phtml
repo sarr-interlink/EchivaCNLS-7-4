@@ -1,0 +1,225 @@
+<?php
+$title = 'Saisir une arrivée';
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('accueil', array('action' => 'add')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+?>
+<?php echo $this->form()->openTag($form); ?>
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Observance</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12"> 
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('ObseCase_1')); ?>
+
+                </label>
+                <div class="col-sm-9 checkbox">
+				<label>
+					<input type="checkbox" name="ObseCase_1[]" class="warning" value="Patient asymtomatique" <?php if ($form->get('ObseCase_1')->getValue() == "1") echo 'checked="checked"';?>> Assidu aux RDV
+					<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+				</label>
+				<label>
+					<input type="checkbox" name="ObseCase_1[]" class="warning" value="Patient asymtomatique" <?php if ($form->get('ObseCase_1')->getValue() == "2") echo 'checked="checked"';?>> Comptage des comprimés OK
+					<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+				</label>
+				<label>
+					<input type="checkbox" name="ObseCase_1[]" class="warning" value="Patient asymtomatique" <?php if ($form->get('ObseCase_1')->getValue() == "3") echo 'checked="checked"';?>> Intolérances
+					<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+				</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('ObseManq')); ?>
+
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formInput($form->get('ObseManq'));
+                    echo $this->formElementErrors($form->get('ObseManq'));
+                    ?>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('ObseCase_2')); ?>
+				</label>
+                <div class="col-sm-9 checkbox">
+				<label>
+					<input type="checkbox" name="ObseCase_2[]" class="warning" value="Patient asymtomatique" <?php if ($form->get('ObseCase_2')->getValue() == "4") echo 'checked="checked"';?>> Fait preuve d'interêt
+					<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+				</label>
+				<label>
+					<input type="checkbox" name="ObseCase_2[]" class="warning" value="Patient asymtomatique" <?php if ($form->get('ObseCase_2')->getValue() == "5") echo 'checked="checked"';?>> Restitue correctement la posologie
+					<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+				</label>
+				<label>
+					<input type="checkbox" name="ObseCase_2[]" class="warning" value="Patient asymtomatique" <?php if ($form->get('ObseCase_2')->getValue() == "6") echo 'checked="checked"';?>> Réagit correctement en cas de prise manquée
+					<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+				</label>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('ObseMoti')); ?>
+
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formSelect($form->get('ObseMoti'));
+                    echo $this->formElementErrors($form->get('ObseMoti'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('Obse')); ?>
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formSelect($form->get('Obse'));
+                    echo $this->formElementErrors($form->get('Obse'));
+                    ?>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="control-label col-sm-3">
+                    <?php echo $this->formLabel($form->get('ObseNota')); ?>
+
+                </label>
+                <div class="col-sm-9">
+                    <?php
+                    echo $this->formTextarea($form->get('ObseNota'));
+                    echo $this->formElementErrors($form->get('ObseNota'));
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        <div class="modal-footer">
+            <?php echo $this->formButton($form->get('CloseObs')); ?>
+        </div>
+        <?php echo $this->form()->closeTag() ?>
+
+<script>
+    $(document).ready(function () {
+        var checkboxes1 = document.getElementsByName('ObseCase_1[]');
+        var checkboxes2 = document.getElementsByName('ObseCase_2[]');
+        var chaine = "";
+        var id = <?php echo $Nume; ?>;
+        var valeur = affiche(id, $('#Obsehidden').val());
+        $('#Obse').val(valeur[1]);
+        $('#ObseCase').val(valeur[2]);
+        $('#ObseManq').val(valeur[3]);
+        $('#ObseMoti').val(valeur[4]);
+        $('#ObseNota').val(valeur[5]);
+        var obscase = valeur[2];
+        var cpt = 0;
+        for (var i = 0; i < obscase.length; i++) {
+            if (cpt < checkboxes1.length) {
+                if (obscase[i] === "1")
+                {
+                    checkboxes1[cpt].checked = true;
+                }
+                else
+                    checkboxes1[cpt].checked = false;
+                cpt++;
+            }
+            else
+                break;
+        }
+        cpt = 0;
+        for (var i = 3; i < obscase.length; i++) {
+            if (cpt < checkboxes2.length) {
+                if (obscase[i] === "1")
+                {
+                    checkboxes2[cpt].checked = true;
+                }
+                else
+                    checkboxes2[cpt].checked = false;
+                cpt++;
+            }
+            else
+                break;
+        }
+        $('#closeobs').on('click', function () {
+            var tab = Array();
+            tab['Nume'] = id;
+            tab['Obse'] = document.getElementById('Obse').value;
+            ;
+
+            for (var i = 0; i < checkboxes1.length; i++)
+            {
+                if (checkboxes1[i].checked)
+                {
+                    chaine += "1";
+                }
+                else
+                    chaine += "0";
+            }
+            for (var i = 0; i < checkboxes2.length; i++)
+            {
+                if (checkboxes2[i].checked)
+                {
+                    chaine += "1";
+                }
+                else
+                    chaine += "0";
+            }
+            tab['ObseCase'] = chaine;
+            tab['ObseManq'] = document.getElementById('ObseManq').value;
+            tab['ObseMoti'] = document.getElementById('ObseMoti').value;
+            tab['ObseNota'] = document.getElementById('ObseNota').value;
+            var str = modification(tab, $('#Obsehidden').val());
+            $('#Obsehidden').val(str);
+        });
+    });
+    function affiche(id, str)
+    {
+        if (str !== null) {
+            var strl = str.split("$");
+            var strc = null;
+            for (var i = 0; i < strl.length; i++)
+            {
+                strc = strl[i].split("#");
+                if (strc[0] === '' + id)  //si enreg
+                    break;
+            }
+        }
+        return(strc);
+    }
+    function modification(tab, str)
+    {
+        var strl = str.split("$");
+        var strc = null;
+        var chaine = "";
+        for (var i = 0; i < (strl.length - 1); i++)
+        {
+            strc = strl[i].split("#");
+
+            if (strc[0] === tab['Nume'] + "")  //si enreg a modifier
+            {
+                if (tab['Dat_'])
+                    tab['Dat_'] = tab['Dat_'].split("/").reverse().join("-");
+                for (var indice in tab)
+                {
+                    if (indice != 'Action')
+                        chaine += tab[indice] + '#';
+                }
+                chaine += "edit$";
+            }
+            else {
+                chaine += strl[i] + "$";
+            }
+        }
+        return(chaine);
+    }
+</script>

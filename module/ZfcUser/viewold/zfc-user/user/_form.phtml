@@ -1,0 +1,16 @@
+<!-- start form login -->
+<div id="regForm" class="form-reg-wrap active">
+    <?php echo $this->form()->openTag($form) ?>
+    <?php foreach ($form as $element): ?>
+    <div class="land-form-row" style="text-align: right;">
+            <?php echo $this->formElement($element); ?>
+            <span class="common-error-msg"><?php echo $this->formElementErrors($element); ?></span>
+        </div> 
+    <?php endforeach ?>
+
+    <?php if ($this->redirect): ?>
+        <input type="hidden" name="redirect" value="<?php echo $this->redirect ?>">
+    <?php endif ?>
+
+    <?php echo $this->form()->closeTag() ?>
+</div>   <!-- end regForm --> 

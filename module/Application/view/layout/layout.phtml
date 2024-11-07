@@ -1,0 +1,272 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php
+        echo $this->headTitle('Amnir Echiva')->setSeparator(' - ')->setAutoEscape(false);
+
+        echo $this->headMeta()
+                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge');
+        ?>
+        <!-- Icon -->
+        <link rel="icon" href="themes/datas/images/icon.ico" />
+        <?php
+        echo $this->headLink()
+                ->appendStylesheet($this->basePath('themes/datas/Icon/font/flaticon.css'))
+                ->appendStylesheet($this->basePath('themes/datas/css/csk.css'))
+                ->appendStylesheet($this->basePath('themes/datas/css/lite-csk.css'))
+                ->appendStylesheet($this->basePath('themes/datas/css/media-query.css'))
+                ->prependStylesheet($this->basePath('themes/datas/assets/animate.css-master/animate.min.css'))
+               ->prependStylesheet($this->basePath('themes/datas/bootstrap/css/bootstrap.min.css'));
+
+        $this->inlineScript()
+                ->prependFile($this->basePath('themes/datas/js/app.js'))
+                ->prependFile($this->basePath('themes/datas/assets/jQuery-slimScroll-1.3.8/jquery.slimscroll.js'))
+                ->prependFile($this->basePath('themes/datas/assets/metisMenu-master/dist/metisMenu.min.js'))
+                ->prependFile($this->basePath('themes/datas/bootstrap/js/bootstrap.min.js'))
+                ->prependFile($this->basePath('themes/datas/assets/jquery-1.12.4/jquery-1.12.4.js'));
+        
+        $prefixe = new \Zend\Session\Container('prefixe');
+        $currentcentre = $prefixe->offsetGet('currentcentre');
+        
+        
+        $prefixecurrent = $prefixe->offsetGet('prefixe');
+        $prefixeagent = $prefixe->offsetGet('prefixeagent');
+        ?>
+
+        <style>
+            td.highlight {
+                background-color: #FFCC66;
+            }
+        </style>
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    <body>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-fixed-top notification navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="/Echiva2/public" class="navbar-brand">
+                        <span class="csk-brand">
+                            <img src="<?php echo $this->basePath('themes/datas/css/images/2_echiva2/icon.png'); ?>" class="img-responsive" alt="AE" title="Amnir Echiva" >
+                        </span>
+                    </a>
+                </div>
+                <a href="#menu-toggle" class="" id="menu-toggle"><i class="fa fa-bars" aria-hidden="true"></i></a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <!-- User Account Menu -->
+                        <li class="dropdown user user-menu">
+                            <!-- Menu Toggle Button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <!-- The user image in the navbar-->
+                                <img class="user-image" src="<?php echo $this->basePath('themes/datas/images/log.jpg'); ?>">
+                                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- The user image in the menu -->
+                                <li class="user-header">
+                                    <img class="user-image" src="<?php echo $this->basePath('themes/datas/images/log.jpg'); ?>">
+                                    <p>
+                                        <?php echo $this->zfcUserDisplayName() ?>
+                                        <small><?php //echo $this->zfcUserIdentity()->getEmail() ?></small>
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <li>
+                                    <a href="<?php echo $this->url('zfcuser/changeemail') ?>"><i class="icon icon-li-envelope sIcon"></i><?php echo $this->translate('Changer l\'e-mail'); ?></a>
+                                </li>
+                                <li>
+                                    <a href="<?php echo $this->url('zfcuser/changepassword') ?>"><i class="icon icon-li-key sIcon"></i><?php echo $this->translate('Changer le mot de passe'); ?></a>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="<?php echo $this->url('zfcuser') ?>" class="btn btn-primary"><?php echo $this->translate('Profil'); ?></a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="<?php echo $this->url('zfcuser/logout') ?>" class="btn btn-danger"><?php echo $this->translate('Déconnexion'); ?></a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- # navbar-custom-menu -->
+                <span class="text-center"><font color ="white">
+                            <?php echo "<b>CENTRE :</b> $currentcentre";
+                            if ($prefixecurrent!=$prefixeagent){
+                                $derndate=$prefixe->offsetGet('derndate');
+                                echo " <b> Derniére mise a jour </b> : $derndate";
+                            }
+                            ?>
+                    </font>
+                </span>
+            </div>
+            <!-- # container-fluid -->
+        </nav>
+        <!-- Main Body content starts here -->
+        <div id="wrapper">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+			
+                <aside class="sidebar">
+                    <nav class="sidebar-nav" id="sidebarscroll">
+                        <?php
+                        echo $this->navigation('navigation')
+                                ->menu()
+                                ->setPartial('partial/menu')
+                                ->render();
+                        ?>
+                    </nav>
+                </aside>
+				
+                <div class="buynow fixed">
+                    <a href="http://interlink.mr" target="_new">
+                        <img src="<?php echo $this->basePath('themes/datas/images/interlink.png'); ?>" class="img-responsive">
+                    </a>
+                    <center>
+                        <div class="label label-warning">
+
+                             &copy; <?php echo date('Y') ?> by 
+                               <strong> <a href="http://interlink.mr" target="_blank">Interlink</a>.</strong><br />
+                               <b>Version</b> 1.0 <br />
+                            
+                        </div>
+                    </center>
+                </div>
+
+            </div>
+            <!-- # Sidebar-wrapper -->
+            <div id="page-content-wrapper">
+                <?php echo $this->inlineScript(); ?>
+                <?php echo $this->content; ?>
+            </div>
+        </div>
+        <div class="modal fade" id="infos" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="infosaccueil" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addfact" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addmed" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addmot" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addintol" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="addmedcourant" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $('#infosaccueil').on('hidden.bs.modal', function () {
+                document.getElementById('infosaccueil').innerHTML = '<div class="modal-dialog  modal-md"><div class="modal-content"></div></div>';
+                $('#infosaccueil').removeData('bs.modal');
+            });
+        </script>
+        <script type="text/javascript">
+            $('#infos').on('hidden.bs.modal', function () {
+                document.getElementById('infos').innerHTML = '<div class="modal-dialog  modal-lg"><div class="modal-content"></div></div>';
+                $('#infos').removeData('bs.modal');
+            });
+        </script>
+        <script type="text/javascript">
+            $('#delete').on('hidden.bs.modal', function () {
+                document.getElementById('delete').innerHTML = '<div class="modal-dialog "><div class="modal-content"></div></div>';
+                $('#delete').removeData('bs.modal');
+            });
+        </script>
+        <script type="text/javascript">
+            $("#addfact").on('hidden.bs.modal', function (event) {
+                if ($('.modal:visible').length) //check if any modal is open
+                {
+                    $('body').addClass('modal-open');//add class to body
+                }
+                document.getElementById('addfact').innerHTML = '<div class="modal-dialog"><div class="modal-content"></div></div>';
+                $('#addfact').removeData('bs.modal');
+            });
+
+        </script>
+        <script type="text/javascript">
+            $("#addmed").on('hidden.bs.modal', function (event) {
+                if ($('.modal:visible').length) //check if any modal is open
+                {
+                    $('body').addClass('modal-open');//add class to body
+                }
+                document.getElementById('addmed').innerHTML = '<div class="modal-dialog"><div class="modal-content"></div></div>';
+                $('#addmed').removeData('bs.modal');
+            });
+        </script>
+        <script type="text/javascript">
+            $("#addmot").on('hidden.bs.modal', function (event) {
+                if ($('.modal:visible').length) //check if any modal is open
+                {
+                    $('body').addClass('modal-open');//add class to body
+                }
+                document.getElementById('addmot').innerHTML = '<div class="modal-dialog"><div class="modal-content"></div></div>';
+                $('#addmot').removeData('bs.modal');
+            });
+        </script>
+        <script type="text/javascript">
+            $("#addintol").on('hidden.bs.modal', function (event) {
+                if ($('.modal:visible').length) //check if any modal is open
+                {
+                    $('body').addClass('modal-open');//add class to body
+                }
+                document.getElementById('addintol').innerHTML = '<div class="modal-dialog"><div class="modal-content"></div></div>';
+                $('#addintol').removeData('bs.modal');
+            });
+        </script>
+        <script type="text/javascript">
+            /* $('#infos').on('hidden.bs.modal', function () {
+             document.getElementById('infos').innerHTML = "";
+             $('#infos').removeData('bs.modal');
+             });*/
+            /*$(".modal").on('hidden.bs.modal', function () {
+             $(this).data('bs.modal', null);
+             });*/
+        </script>
+    </body>
+</html>

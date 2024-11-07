@@ -1,0 +1,286 @@
+<?php
+$title = 'Historique de délivrance';
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('dispensation', array('action' => 'historique', 'Nume' => $this->Nume,)));
+
+$this->headLink()
+        ->prependStylesheet($this->basePath('bootstrap-select.min.css'))
+        ->prependStylesheet($this->basePath('themes/datas/css/tables.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/bootstrap-table-develop/src/bootstrap-table.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/media/css/dataTables.bootstrap.css'))
+?>
+
+<!-- Page Level JS -->
+<?php
+$this->inlineScript()
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/dataTables.bootstrap.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/dataTables.buttons.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.print.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.html5.min.js'))
+        ->prependFile($this->basePath('jszip.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/bootstrap-table-develop/dist/bootstrap-table.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/jquery.dataTables.js'))
+        ->appendFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/dataTables.bootstrap.js'))
+        ->appendFile($this->basePath('bootstrap-select.min.js'));
+?>
+<style>
+    div.dataTables_length{
+        position:relative;
+        float:left;
+    }
+</style>
+
+<!-- row -->
+<?php
+echo $this->flashMessenger()->renderCurrent('error', array('alert', 'alert-danger'));
+echo $this->flashMessenger()->renderCurrent('success', array('alert', 'alert-success'));
+?>
+<?php echo $this->form()->openTag($form); ?>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary-border-top">
+            <div class="panel-heading clearfix">
+                <h3 class="panel-title pull-left">
+                    <?php echo $this->escapeHtml($title); ?>
+                </h3>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+
+                    <?php
+                    echo $this->formHidden($form->get('Stoc'));
+                    echo $this->dataTable('histdatatable')->renderHtml();
+                    ?>
+                    <!-- /.table-responsive -->
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+            <div class="modal fade" id="deletemodalform" tabindex="-1" role="dialog" aria-labelledby="sortiemodalform" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="panel-title">
+                                <b>Suppression de délivrance</b>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </h3>
+                        </div>
+                        <div class="modal-body">
+                            <p><h4>Voulez-vous vraiment supprimer la délivrance ?</h4></p>
+                        </div>
+                        <div class="modal-footer">
+                            <?php echo $this->formHidden($form->get('Nume')); ?>
+                            <?php echo $this->formHidden($form->get('Mediconshidden')); ?>
+                            <button type="submit" name="del" id="suppaction" value="Oui" class="btn btn-danger btn-outline btn-rounded" >Oui</button>
+                            <span>
+                                <button type="submit" name="del" value="Non" class="btn btn-default btn-outline btn-rounded" data-dismiss="modal" aria-label="Close">Non</button>
+                            </span>   
+                            </form>        
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class='pull-left'>
+                            <form  class="form-inline">
+                                <div class="form-group">
+                                    <select class="selectpicker" data-live-search="true" name="Typ_" id='Typ_'>
+                                        <option value="0">Tout Type</option>
+                                        <option value="1">Medicaments</option>
+                                        <option value="2">Consommables</option>
+                                        <option value="3">Arv</option>
+                                        <option value="4">Laboratoire</option>
+                                        <option value="5">Entrée</option>
+                                        <option value="6">Sortie</option>
+                                    </select>
+                                    De : 
+                                    <span class="input-group date">
+                                        <input type='date' class="form-control" name="daymin" id="daymin" value="<?php echo $daymin; ?>" />
+                                    </span>
+                                    à : <span class="input-group date">
+                                        <input type='date' class="form-control" name="daymax" id="daymax" value="<?php echo $daymax; ?>"/>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php echo $this->form()->closeTag() ?>
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<script>
+    $(document).ready(function () {
+        var stockinit = <?php echo json_encode($stock); ?>;
+        var chaine = "";
+        var nomb = "";
+        var id = "";
+        var histdb = $('#histdb').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                dataType: 'json',
+                url: '<?php echo $this->url('dispensation', array('action' => 'data1')); ?>',
+                data: function (data) {
+                    data.daymin = $('#daymin').val();
+                    data.daymax = $('#daymax').val();
+                    data.Typ_ = $('#Typ_').val();
+                },
+            },
+            deferRender: true,
+            dom: 'Blfrtip',
+            "buttons": [
+                {
+                    extend: 'copyHtml5',
+                    text: '<span class="glyphicon glyphicon-copy"></span> Copier ',
+                    className: 'btn btn-info btn-outline btn-rounded',
+                    key: {
+                        key: 'c',
+                        altKey: true
+                    }
+                },
+                {
+                    extend: 'excel',
+                    text: '<span class="glyphicon glyphicon-export"></span> Excel ',
+                    className: 'btn btn-success btn-outline btn-rounded',
+                    key: {
+                        key: 'x',
+                        altKey: true
+                    }
+                },
+				
+		/*		{	
+					text: 'Export all to Excel II',
+					action: function (e, dt, button, config)
+					{ alert('az');
+						dt.one('preXhr', function (e, s, data)
+						{
+							data.length = -1;
+						}).one('export', function (e, settings, json, xhr)
+						{
+							var excelButtonConfig = $.fn.DataTable.ext.buttons.excelHtml5;
+							var addOptions = { exportOptions: { 'columns': ':all'} };
+		
+							$.extend(true, excelButtonConfig, addOptions);
+							excelButtonConfig.action(e, dt, button, excelButtonConfig);
+						})
+					}
+				},*/
+				
+				
+                {
+                    extend: 'print',
+                    text: '<span class="glyphicon glyphicon-print"></span> Imprimer ',
+                    message: 'Amnir Echiva',
+                    className: 'btn btn-danger btn-outline btn-rounded',
+                    key: {
+                        key: 'p',
+                        altKey: true
+                    }
+                },
+            ],
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Tout"]],
+            "responsive": true,
+            language: {
+                "decimal": "",
+                "emptyTable": "aucune donnée disponible",
+                "info": "Affichage de _START_ à _END_ de _TOTAL_ délivrances",
+                "infoEmpty": "Affichage 0 à 0 de 0 délivrances",
+                "infoFiltered": "(Filtré de _MAX_ délivrances totales)",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Afficher _MENU_ Délivrance",
+                "loadingRecords": "<div id='loader'></div>",
+                "processing": "<div id='loader'></div>",
+                "search": "<b>Rechercher:</b>",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+                "aria": {
+                    "sortAscending": ": Activer pour trier la colonne en ordre croissant",
+                    "sortDescending": ": Activer pour trier la colonne en descendant"
+                }
+            }
+        });
+        $('#daymin').on('change', function (event) {
+            histdb.draw();
+        });
+        $('#daymax').on('change', function (event) {
+            histdb.draw();
+        });
+        $('#Typ_').on('change', function (event) {
+            histdb.draw();
+        });
+
+        $('#histdb').on('click', 'tbody tr a', function () {
+            var rowdel = $(this).closest('tr');
+            id = this.id;
+            $('#Nume').val("");
+            $('#Mediconshidden').val("");
+
+
+            var donneehist = histdb.row(rowdel).data();
+            console.log(donneehist);
+            /*
+             $('#Itemhidden').val(suppression(id, $('#Itemhidden').val()));
+             var tr = $(this).closest('tr');
+             histdb.row(tr).remove().draw(false);*/
+            chaine = "";
+            setform();
+
+        });
+
+
+        function setform() {
+            if (id) {
+                var numeitem = id.split('#');
+                $('#Nume').val("" + numeitem[5]);
+                var stock = stockinit + "";
+                stock = stock.split("xy9k");
+                setstoc(id, stock);
+            }
+            $('#stoc').val(chaine);
+        }
+        function setstoc(id, stock) {
+
+            var prodinf = id.split('#');
+            if (prodinf[0]) {
+                for (var i = 0; i < stock.length; i += 8) {
+                    if (prodinf[0] == stock[i])
+                    {
+                        if (prodinf[1] == stock[i + 1] && prodinf[2] == stock[i + 2] && prodinf[3] == stock[i + 3])
+                        {
+                            stock[i + 5] = parseInt(stock[i + 5]) + parseInt(prodinf[4]);
+                        }
+
+                    }
+                }
+            }
+
+
+            for (var i = 0; i < stock.length; i++) {
+                chaine += stock[i];
+                if (i < stock.length - 1) {
+                    chaine += 'xy9k';
+                }
+            }
+            $('#Mediconshidden').val(prodinf[6] + "#" + prodinf[7] + "#" + prodinf[4]);
+            return chaine;
+        }
+    });
+</script>

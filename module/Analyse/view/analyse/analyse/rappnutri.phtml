@@ -1,0 +1,332 @@
+<?php
+$title = 'Rapport mensuel Nutrition';
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('analyse', array('action' => 'rappnutri')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+$this->headLink()
+        ->prependStylesheet($this->basePath('themes/datas/css/tables.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/bootstrap-table-develop/src/bootstrap-table.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/media/css/dataTables.bootstrap.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/css/buttons.dataTables.min.css'))
+        ->prependStylesheet($this->basePath('themes/datas/css/csk.css'))
+?>
+<?php
+$this->inlineScript()
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/dataTables.bootstrap.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/dataTables.buttons.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.print.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.html5.min.js'))
+        ->prependFile($this->basePath('jszip.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/bootstrap-table-develop/dist/bootstrap-table.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/jquery.dataTables.js'))
+        ->prependFile($this->basePath('themes/datas/assets/Highcharts-4.2.5/js/highcharts-3d.js'))
+        ->prependFile($this->basePath('themes/datas/js/chartist-pie.js'))
+        ->prependFile($this->basePath('themes/datas/js/highcharts-data.js'))
+        ->prependFile($this->basePath('themes/datas/assets/Highcharts-4.2.5/js/modules/data.js'))
+        ->prependFile($this->basePath('themes/datas/assets/Highcharts-4.2.5/js/highcharts.js'));
+?>
+
+<?php
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('Nume'));
+?>
+<div class="panel panel-primary-border-top">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title pull-left" style="padding-top: 7.5px;">
+                    <?php echo $this->escapeHtml($title); ?>
+                </h4>
+                <div class="btn-group pull-right">
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <?php
+                            echo $this->formInput($form->get('datedebmoi'));
+                            echo $this->formElementErrors($form->get('datedebmoi'));
+                            ?>
+                        </div>
+                        
+                        <div class="col-sm-4">
+                            <button type="submit" name="submit" id="submit" class="btn btn-primary">Lancer</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+       
+        <br/>
+            <div class="table-responsive">
+                <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="nutricta">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th colspan="4"><font color="red">Admissions</font></th>
+                            <th colspan="5"><font color="red">Sorties</font></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th>Tranches d’âge</th>
+                            <th>En charge fin du mois précédent.</th>
+                            <th>Nouvelle admission</th>
+                            <th>Rechute</th>
+                            <th>Réadmission</th>
+                            <th>Total admission</th>
+                            <th>Guéris</th>
+                            <th>Décès</th>
+                            <th>Abandon</th>
+                            <th>Non répondant</th>
+                            <th>Total sortie</th>
+                            <th>En charge à la fin du mois</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($tabchrgcta as $tabchrgct) :  ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($tabchrgct['titre']); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgct['chrgmoiprec']); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgct[1]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgct[2]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgct[3]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgct[4]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgct[5]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgct[6]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgct[7]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgct[8]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgct[9]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgct['chrgfinmoi']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+            <div class="table-responsive">
+                <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="nutrichn">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th colspan="4"><font color="red">Admissions</font></th>
+                            <th colspan="5"><font color="red">Sorties</font></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th>Tranches d’âge</th>
+                            <th>En charge fin du mois précédent.</th>
+                            <th>Nouvelle admission</th>
+                            <th>Rechute</th>
+                            <th>Réadmission</th>
+                            <th>Total admission</th>
+                            <th>Guéris</th>
+                            <th>Décès</th>
+                            <th>Abandon</th>
+                            <th>Non répondant</th>
+                            <th>Total sortie</th>
+                            <th>En charge à la fin du mois</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($tabchrgchn as $tabchrgch) :  ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($tabchrgch['titre']); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgch['chrgmoiprec']); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgch[1]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgch[2]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgch[3]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgch[4]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgch[5]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgch[6]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgch[7]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgch[8]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgch[9]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabchrgch['chrgfinmoi']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+            <div class="table-responsive">
+                <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="nutriintran">
+                    <thead>
+                        
+                        <tr>
+                            <th><font color="red">Intrants</font></th>
+                            <th><font color="red">Stock au début du mois (sachets)</font></th>
+                            <th><font color="red">Quantité reçue (sachets)</font></th>
+                            <th><font color="red">Quantité distribuée (sachets)</font></th>
+                            <th><font color="red">Stock à la fin du mois (sachets)</font></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($tabintrant as $tabintran) :  ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($tabintran['titre']); ?></td>
+                                <td><?php echo $this->escapeHtml($tabintran[1]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabintran[2]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabintran[3]); ?></td>
+                                <td><?php echo $this->escapeHtml($tabintran['stockfinmoi']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+    </div>
+    <!-- /.panel-body -->
+    <div class="panel-footer">
+        
+    </div>
+</div>
+
+<?php echo $this->form()->closeTag() ?>
+
+<script>
+    $(document).ready(function () {
+           $('#nutricta').DataTable({
+            dom: 'Bfrtip',
+            "buttons": [
+                {
+                    extend: 'collection',
+                    text: 'Exporter la liste',
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            text: '<i class="fa fa-files-o"></i> Copier',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="fa fa fa-print"></i> Imprimer',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            className: 'btn btn-primary',
+                        }
+                    ],
+                    className: 'btn btn-primary',
+                }
+            ],
+            "ordering": false,
+            language: {
+                buttons: {
+                    copyTitle: 'Ajouté au presse-papiers',
+                    /*copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',*/
+                    copySuccess: {
+                        _: '%d lignes copiées',
+                        1: '1 ligne copiée'
+                    }
+                },
+                "emptyTable": "aucune donnée disponible",
+                "search": "Chercher:",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+            }
+        });
+           $('#nutrichn').DataTable({
+            dom: 'Bfrtip',
+            "buttons": [
+                {
+                    extend: 'collection',
+                    text: 'Exporter la liste',
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            text: '<i class="fa fa-files-o"></i> Copier',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="fa fa fa-print"></i> Imprimer',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            className: 'btn btn-primary',
+                        }
+                    ],
+                    className: 'btn btn-primary',
+                }
+            ],
+            "ordering": false,
+            language: {
+                buttons: {
+                    copyTitle: 'Ajouté au presse-papiers',
+                    /*copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',*/
+                    copySuccess: {
+                        _: '%d lignes copiées',
+                        1: '1 ligne copiée'
+                    }
+                },
+                "emptyTable": "aucune donnée disponible",
+                "search": "Chercher:",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+            }
+        });
+           $('#nutriintran').DataTable({
+            dom: 'Bfrtip',
+            "buttons": [
+                {
+                    extend: 'collection',
+                    text: 'Exporter la liste',
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            text: '<i class="fa fa-files-o"></i> Copier',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="fa fa fa-print"></i> Imprimer',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            className: 'btn btn-primary',
+                        }
+                    ],
+                    className: 'btn btn-primary',
+                }
+            ],
+            "ordering": false,
+            language: {
+                buttons: {
+                    copyTitle: 'Ajouté au presse-papiers',
+                    /*copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',*/
+                    copySuccess: {
+                        _: '%d lignes copiées',
+                        1: '1 ligne copiée'
+                    }
+                },
+                "emptyTable": "aucune donnée disponible",
+                "search": "Chercher:",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+            }
+        });
+          
+    });
+</script>

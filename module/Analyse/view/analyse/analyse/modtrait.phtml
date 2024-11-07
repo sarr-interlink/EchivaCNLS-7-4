@@ -1,0 +1,139 @@
+<?php
+$title = 'Modification de traitement';
+$this->headTitle($title);
+$form = $this->form;
+$form->setAttribute('action', $this->url('analyse', array('action' => 'modtrait')));
+$form->setAttribute('class', 'form-horizontal');
+$form->prepare();
+$this->headLink()
+        ->prependStylesheet($this->basePath('themes/datas/css/tables.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/bootstrap-table-develop/src/bootstrap-table.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/media/css/dataTables.bootstrap.css'))
+        ->prependStylesheet($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/css/buttons.dataTables.min.css'))
+        ->prependStylesheet($this->basePath('themes/datas/css/csk.css'))
+?>
+<?php
+$this->inlineScript()
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/dataTables.bootstrap.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/dataTables.buttons.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.print.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/extensions/Buttons/js/buttons.html5.min.js'))
+        ->prependFile($this->basePath('jszip.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/bootstrap-table-develop/dist/bootstrap-table.min.js'))
+        ->prependFile($this->basePath('themes/datas/assets/DataTables-1.10.12/media/js/jquery.dataTables.js'))
+        ->prependFile($this->basePath('themes/datas/assets/Highcharts-4.2.5/js/highcharts-3d.js'))
+        ->prependFile($this->basePath('themes/datas/js/chartist-pie.js'))
+        ->prependFile($this->basePath('themes/datas/js/highcharts-data.js'))
+        ->prependFile($this->basePath('themes/datas/assets/Highcharts-4.2.5/js/modules/data.js'))
+        ->prependFile($this->basePath('themes/datas/assets/Highcharts-4.2.5/js/highcharts.js'));
+?>
+
+<?php
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('Nume'));
+?>
+<div class="panel panel-primary-border-top">
+    <div class="panel-heading clearfix">
+        <h3 class="panel-title pull-left" style="padding-top: 7.5px;">
+            <?php echo $this->escapeHtml($title); ?>
+        </h3>
+         <div class="btn-group pull-right">
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <?php
+                            echo $this->formInput($form->get('datedeb'));
+                            echo $this->formElementErrors($form->get('datedeb'));
+                            ?>
+                        </div>
+                        <div class="col-sm-4">
+                            <?php
+                            echo $this->formInput($form->get('datefin'));
+                            echo $this->formElementErrors($form->get('datefin'));
+                            ?>
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="submit" name="submit" id="submit" class="btn btn-primary">Lancer</button>
+                        </div>
+                    </div>
+                </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+       <br/>
+            <div class="table-responsive">
+                <table width="100%" class="table table-striped table-bordered"  cellspacing="0" id="modtrait-datatable">
+                    <thead>
+                        <tr>
+                            <th>Protocole précedent</th>
+                            <th>Nouveau protocole</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($tabmodtraitmt as $k => $tabmodtrait) : ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($k); ?></td>
+                                <td><?php echo $this->escapeHtml($tabmodtrait); ?></td>
+                            </tr> 
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+    </div>
+    <!-- /.panel-body -->
+    <div class="panel-footer">
+        
+    </div>
+</div>
+
+<?php echo $this->form()->closeTag() ?>
+
+<script>
+        $('#modtrait-datatable').DataTable({
+            dom: 'Bfrtip',
+            "buttons": [
+                {
+                    extend: 'collection',
+                    text: 'Exporter la liste',
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            text: '<i class="fa fa-files-o"></i> Copier',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'print',
+                            text: '<i class="fa fa fa-print"></i> Imprimer',
+                            className: 'btn btn-primary',
+                        },
+                        {
+                            extend: 'excel',
+                            text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            className: 'btn btn-primary',
+                        }
+                    ],
+                    className: 'btn btn-primary',
+                }
+            ],
+            "ordering": false,
+            language: {
+                buttons: {
+                    copyTitle: 'Ajouté au presse-papiers',
+                    /*copyKeys: 'Appuyez sur <i>ctrl</i> ou <i>\u2318</i> + <i>C</i> pour copier les données du tableau à votre presse-papiers. <br><br>Pour annuler, cliquez sur ce message ou appuyez sur Echap.',*/
+                    copySuccess: {
+                        _: '%d lignes copiées',
+                        1: '1 ligne copiée'
+                    }
+                },
+                "emptyTable": "aucune donnée disponible",
+                "search": "Chercher:",
+                "zeroRecords": "Aucun enregistrements correspondants trouvés",
+                "paginate": {
+                    "first": "Premier",
+                    "last": "Dernier",
+                    "next": "Suivant",
+                    "previous": "Précédent"
+                },
+            }
+        });
+</script>

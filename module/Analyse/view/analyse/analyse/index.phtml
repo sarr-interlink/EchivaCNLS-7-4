@@ -1,0 +1,346 @@
+<?php
+$title = 'Reporting';
+$this->headTitle($title);
+
+$this->headLink()
+        ->appendStylesheet($this->basePath('themes/datas/bootstrap/css/bootstrap.min.css'))
+        ->appendStylesheet($this->basePath('themes/datas/css/project.css'));
+?>
+
+<!-- Page Level JS -->
+<?php
+$this->inlineScript()
+        ->appendFile($this->basePath('themes/datas/js/jquery-ui.js'))
+        ->appendFile($this->basePath('themes/datas/js/project-dashboard.js'));
+?>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary-border-top">
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title pull-left" style="padding-top: 7.5px;">
+                    <?php echo $this->escapeHtml($title); ?>
+                </h4>
+                <div class="clearfix"></div>
+            </div>
+
+            <!-- /.panel-heading -->
+            <div class="panel panel-body">
+                <div class="row cards">
+
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'depistage')) { ?>
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12 animated ">
+
+                            <div class="card warning-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Activités de dépistage </h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'depistage')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'suivipatient')) { ?>
+
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card primary-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Suivi des patients</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'suivipatient')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'profilpatient')) { ?>
+
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card primary-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Profils des patients enregistrés</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'profilpatient')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'nouveaupatient')) { ?>
+
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card info-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Nouveaux patients</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'nouveaupatient')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'medicons')) { ?>
+
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card success-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Consultations médicales</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0" text-center"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'medicons')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'incarv')) { ?>
+
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card warning-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Inclusions sous ARV</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0" text-center"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'incarv')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                           <div class="card primary-bg">
+                               <div class="display-block">
+                                   <div>
+                                       <h4 class="text-center">Modification de traitement</h4>
+                                   </div>
+                                   <div class="value" >
+                                       <h4 class="odometer text-center" data-precision="0"></h4>
+                                   </div>
+                                   <div>
+                                       <h5 class="text-center detailsview">
+                                           <a href="<?php echo $this->url('analyse', array('action' => 'modtrait')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                   </div> 
+                               </div>
+                           </div>
+                       </div> -->
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'suivibio')) { ?>
+
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card info-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Suivi biologique</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'suivibio')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'pharma')) { ?>
+
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card success-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Pharmacie</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0" text-center"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'pharma')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'infectopp')) { ?>
+
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card warning-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Infections opportunistes</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0" text-center"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'infectopp')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'hospdj')) { ?>
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card primary-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Hospitalisation du jour</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'hospdj')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'ptme')) { ?>
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card info-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">PTME</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'ptme')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'suivinutri')) { ?>
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card success-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Suivi nutritionnel</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'suivinutri')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                        <div class="card info-bg">
+                            <div class="display-block">
+                                <div>
+                                    <h4 class="text-center">Rapport Cotrimoxazole</h4>
+                                </div>
+                                <div class="value" >
+                                    <h4 class="odometer text-center" data-precision="0"></h4>
+                                </div>
+                                <div>
+                                    <h5 class="text-center detailsview">
+                                        <a href="<?php echo $this->url('analyse', array('action' => 'rappcotx')); ?>">
+                                            Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'extract')) { ?>
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card warning-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Extraction BDD Amnir Echiva</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'extract')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <?php if ($this->IsAllowed()->isAllowed('Analyse\Controller\Analyse', 'transpatient')) { ?>
+                        <div class="col-sm-6 col-md-4 col-lg-3 col-xs-12">
+                            <div class="card primary-bg">
+                                <div class="display-block">
+                                    <div>
+                                        <h4 class="text-center">Transfert de patient</h4>
+                                    </div>
+                                    <div class="value" >
+                                        <h4 class="odometer text-center" data-precision="0"></h4>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-center detailsview">
+                                            <a href="<?php echo $this->url('analyse', array('action' => 'transpatient')); ?>">
+                                                Détails <i class="fa fa-angle-double-right"></i></a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>           
+            </div>
+
+        </div>
+    </div>
+</div>
